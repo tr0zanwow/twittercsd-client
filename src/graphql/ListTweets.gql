@@ -1,0 +1,16 @@
+query search{
+    twitter{
+      search(q:"@BBCNews" result_type:recent,count:20){
+        id_str
+        created_at
+        text
+        user{
+          name
+          screen_name
+          description
+          profile_image_url
+          tweets_count
+        }
+      }
+    }
+  }
