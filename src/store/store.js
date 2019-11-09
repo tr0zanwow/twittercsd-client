@@ -68,6 +68,8 @@ actions: {
             }
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
+            commit("isAuthenticated",true)
+
         })
         .catch(function(error) {
             console.log(error);

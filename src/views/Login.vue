@@ -1,6 +1,6 @@
 <template>
         <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-7">
+            <div class="col-lg-6 col-md-7">
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-transparent pb-5">
                         <div class="mt-2 mb-5"></div>
@@ -11,32 +11,12 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card-body px-lg-5 py-lg-4">
+                    <div class="card-body px-lg-6 py-lg-4">
                         <div class="text-center text-muted mb-4">
                             <div id="titleHeader" class="display-4">Twitter CSD</div>
                             <p id="subHeader">(Customer Support Desk)</p>
                         </div>
-                        <form role="form">
-                            <base-input class="input-group-alternative mb-3"
-                                        placeholder="Email"
-                                        addon-left-icon="ni ni-email-83"
-                                        v-model="model.email">
-                            </base-input>
-
-                            <base-input class="input-group-alternative"
-                                        placeholder="Password"
-                                        type="password"
-                                        addon-left-icon="ni ni-lock-circle-open"
-                                        v-model="model.password">
-                            </base-input>
-
-                            <base-checkbox class="custom-control-alternative">
-                                <span class="text-muted">Remember me</span>
-                            </base-checkbox>
-                            <div class="text-center">
-                                <base-button type="primary" class="my-4">Sign in</base-button>
-                            </div>
-                        </form>
+                        <div class="">A web app to efficiently manages tweet replies, list recent tweets and much more actions in just one platform</div>
                     </div>
                 </div>
                 <!-- <div class="row mt-3">

@@ -28,39 +28,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- Navbar items -->
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <router-link class="nav-link nav-link-icon" to="/">
-                            <i class="ni ni-planet"></i>
-                            <span class="nav-link-inner--text">Dashboard</span>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link nav-link-icon" to="/register">
-                            <i class="ni ni-circle-08"></i>
-                            <span class="nav-link-inner--text">Register</span>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link nav-link-icon" to="/login">
-                            <i class="ni ni-key-25"></i>
-                            <span class="nav-link-inner--text">Login</span>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link nav-link-icon" to="/profile">
-                            <i class="ni ni-single-02"></i>
-                            <span class="nav-link-inner--text">Profile</span>
-                        </router-link>
-                    </li>
-                </ul>
             </template>
         </base-nav>
         <!-- Header -->
         <div class="header bg-gradient-success py-7 py-lg-8">
             <div class="container">
-                <div class="header-body text-center mb-5">
+                <div class="header-body text-center mb-7">
                     
                 </div>
             </div>
@@ -72,7 +45,7 @@
             </div>
         </div>
         <!-- Page content -->
-        <div id="pageContainer" class="container mt--9 pb-5">
+        <div id="pageContainer" class="container mt--9 pb-9">
             <slide-y-up-transition mode="out-in" origin="center top">
                 <router-view></router-view>
             </slide-y-up-transition>

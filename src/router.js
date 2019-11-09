@@ -9,8 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: 'dashboard',
-      component: DashboardLayout,
+      redirect: 'login',
+      component: () => import(/* webpackChunkName: "demo" */ './views/Login.vue'),
       children: [
         {
           path: '/dashboard',
