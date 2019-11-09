@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import router from '../router'
 
 Vue.use(Vuex)
 
@@ -21,14 +22,14 @@ export const store = new Vuex.Store({
     getters:{
         tweet_id(state) {
             if(state.tweet_id == ""){
-                this.$router.push('Profile')
+               
             }
             else{
             return state.tweet_id;
             }
         },
-        isAuthenticated () {
-            return vueAuth.isAuthenticated()
+        authenticated (state) {
+            return state.isAuthenticated
         },
         getUserImage(state){
           var str = state.userImgUrl;
@@ -40,8 +41,8 @@ export const store = new Vuex.Store({
         setTweetId: (state, newValue) => {
             state.tweet_id = newValue
         },
-        isAuthenticated:(state, payload)=> {
-            state.isAuthenticated = payload.isAuthenticated
+        authenticated:(state, payload)=> {
+            state.isAuthenticated = payload
         },
         setLoggedInUser: (state,payload) =>{
             state.userName = payload.userName,
@@ -68,7 +69,8 @@ actions: {
             }
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
-            commit("isAuthenticated",true)
+            commit("authenticated",true)
+            router.push('dashboard')
 
         })
         .catch(function(error) {

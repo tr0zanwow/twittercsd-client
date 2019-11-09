@@ -7,7 +7,7 @@
                 <span class="navbar-toggler-icon"></span>
             </navbar-toggle-button>
             <router-link class="navbar-brand" to="/">
-                <img :src="logo" class="navbar-brand-img" alt="...">
+                <strong id="brandTitle">Twitter CSD</strong>
             </router-link>
 
             <slot name="mobile-right">

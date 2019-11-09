@@ -26,6 +26,16 @@
     </p>
   </card>
 </template>
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+h5{
+    font-family: 'Montserrat', sans-serif;
+}
+span{
+    font-family: 'Open Sans', sans-serif;
+}
+</style>
 <script>
   import Card from './Card.vue';
 
@@ -46,4 +56,3 @@
     }
   };
 </script>
-<style></style>

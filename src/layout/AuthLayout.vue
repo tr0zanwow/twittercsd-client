@@ -5,7 +5,7 @@
                   containerClasses="px-4 container"
                   expand>
             <router-link slot="brand" class="navbar-brand" to="/">
-                <img src="img/brand/white.png"/>
+                <strong id="brandTitle">Twitter CSD</strong>
             </router-link>
 
             <template v-slot="{closeMenu}">
