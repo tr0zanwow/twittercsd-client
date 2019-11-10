@@ -44,8 +44,7 @@
         </base-header>
 
         <div class="container-fluid mt--8">
-            <!--Tables-->
-            <div class="row mt-0" v-if="getDescription!='nodata'">
+            <div class="row mt-0" v-if="getDescription!=''">
                 <div class="col-xl-12 col-lg-6">
                     <stats-card title="Description"
                                 type="gradient-blue"
@@ -58,21 +57,59 @@
             </div>
             <div class="row mt-3">
                 <div class="col-xl-12 mb-5 mb-xl-0">
-                    <page-visits-table></page-visits-table>
+                    <div class="card">
+                        <div class="card-body border-0">
+                        <div class="row justify-content-start">
+                            <div class="col-md-1  text-left justify-content-start">
+                            <span class="avatar avatar-l rounded-circle">
+                            <img v-bind:src="getUserImageURL">
+                            </span>
+                            </div>
+                            <div class="col-md-7 text-left">
+                            <span><h3 id="tweetedText" class="mb-5 tweetText">{{getTweetText}}</h3></span>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row justify-content-end">
+                            <div id="tweeteetingTextList" class="col-md-6 text-right">
+                            <h3 id="tweetingText" class="mb-3 tweetText">{{getTweetText}}</h3>
+                            </div>
+                        </div> -->
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!--End tables-->
         </div>
+
+
+
+
 
     </div>
 </template>
+<style lang="scss" scoped>
+ #tweetedText{
+     margin-left: -10px;
+ }
+ #tweetingText{
+     margin-right: -10px;
+ }
+ .tweetText{
+     font-size: 15px;
+ }
+
+// #tweetedTextList{
+//     margin-left: -10px;
+// }
+// #tweeteetingTextList{
+//     margin-right: -10px;
+// }
+</style>
 <script>
   import SocialTrafficTable from './Dashboard/SocialTrafficTable';
-  import PageVisitsTable from './Dashboard/PageVisitsTable';
 
   export default {
     components: {
-      PageVisitsTable,
       SocialTrafficTable,
     },
     data() {
@@ -94,6 +131,12 @@
         },
         getDescription(){
             return this.$store.getters.getDescription 
+        },
+        getTweetText(){
+            return this.$store.getters.getTweetText 
+        },
+        getUserImageURL(){
+            return this.$store.state.userData.user.profile_image_url 
         }
     },
     methods: {

@@ -1,6 +1,5 @@
 <template>
     <div id="loginContainer" class="main-content bg-default">
-        <!-- Navbar -->
         <base-nav class="navbar-top navbar-horizontal navbar-dark"
                   containerClasses="px-4 container"
                   expand>
@@ -9,7 +8,6 @@
             </router-link>
 
         </base-nav>
-        <!-- Header -->
         <div class="header bg-gradient-success py-7 py-lg-8">
             <div class="container">
                 <div class="header-body text-center mb-7">
@@ -23,7 +21,6 @@
                 </svg>
             </div>
         </div>
-        <!-- Page content -->
         <div id="pageContainer" class="container mt--9 pb-9">
             <slide-y-up-transition mode="out-in" origin="center top">
                 <router-view></router-view>

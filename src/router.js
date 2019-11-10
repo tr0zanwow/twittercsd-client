@@ -31,13 +31,13 @@ export default new Router({
             next()
           }
           else{
-            next({name: 'tables'})
+            next({name: 'profile'})
           }
         }
         },
         {
-          path: '/tables',
-          name: 'tables',
+          path: '/profile',
+          name: 'profile',
           component: () => import(/* webpackChunkName: "demo" */ './views/Tables.vue')
         }
       ]

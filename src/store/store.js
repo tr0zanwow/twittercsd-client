@@ -42,6 +42,9 @@ export const store = new Vuex.Store({
         },
         getDescription(state){
             return state.userData.user.description
+        },
+        getTweetText(state){
+            return state.userData.text
         }
     },
     mutations: {
@@ -80,7 +83,7 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            router.push({name: 'tables',params: {isAuthenticated: true}})
+            router.push({name: 'profile',params: {isAuthenticated: true}})
 
         })
         .catch(function(error) {

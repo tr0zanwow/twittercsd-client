@@ -1,6 +1,6 @@
 query tweets{
     twitter{
-      search(q:"@cnni" result_type:popular,count:20){
+      search(q:"@cnni" result_type:recent,count:20){
         id_str
         created_at
         text
