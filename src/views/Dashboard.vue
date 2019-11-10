@@ -6,7 +6,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Name"
                                 type="gradient-red"
-                                sub-title="350,897"
+                                :sub-title="getUserName"
                                 icon="fa fa-user"
                                 class="mb-4 mb-xl-0"
                     >
@@ -15,7 +15,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Screen Name"
                                 type="gradient-orange"
-                                sub-title="2,356"
+                                :sub-title="getScreenName"
                                 icon="fa fa-at"
                                 class="mb-4 mb-xl-0"
                     >
@@ -24,7 +24,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Tweet Count"
                                 type="gradient-green"
-                                sub-title="924"
+                                :sub-title="getTweetCount"
                                 icon="fa fa-sort"
                                 class="mb-4 mb-xl-0"
                     >
@@ -34,7 +34,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Followers"
                                 type="gradient-info"
-                                sub-title="49,65%"
+                                :sub-title="getFollowersCount"
                                 icon="fa fa-users"
                                 class="mb-4 mb-xl-0"
                     >
@@ -49,7 +49,7 @@
                 <div class="col-xl-12 col-lg-6">
                     <stats-card title="Description"
                                 type="gradient-blue"
-                                description="924"
+                                :description="getDescription"
                                 icon="fa fa-sticky-note"
                                 class="mb-4 mb-xl-0">
                     </stats-card>
@@ -77,8 +77,25 @@
     },
     data() {
       return {
-        
-      };
+         };
+    },
+    computed:{
+        getUserName(){
+            this.$store.state.userData.user.name
+            console.log(this.$store.state.userData.user.name)
+        },
+        getScreenName(){
+            this.$store.state.userData.user.screen_name
+        },
+        getTweetCount(){
+            this.$store.state.userData.user.tweets_count
+        },
+        getFollowersCount(){
+            this.$store.state.userData.user.followers_count
+        },
+        getDescription(){
+            this.$store.state.userData.user.description
+        }
     },
     methods: {
       

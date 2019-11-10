@@ -4,9 +4,9 @@
               :show-toggle-button="false"
               expand>
 
-        <ul class="navbar-nav align-items-center d-none d-md-flex mr-3 d-none d-md-flex ml-lg-auto">
+        <ul class="navbar-nav align-items-center d-none d-md-flex mr-4 d-none d-md-flex ml-lg-auto">
             <li class="nav-item dropdown">
-                <base-dropdown class="nav-link pr-0">
+                <base-dropdown class="nav-link pr-1">
                     <div class="media align-items-center" slot="title">
                 <span class="avatar avatar-sm rounded-circle">
                   <img alt="Image placeholder" v-bind:src="getImageUrl">
@@ -25,10 +25,10 @@
                             <span>My profile</span>
                         </router-link>
                         <div class="dropdown-divider"></div>
-                        <a @click="logoutUser()" href="/#/" class="dropdown-item list-item">
+                        <router-link to="/profile" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
-                        </a>
+                        </router-link>
                     </template>
                 </base-dropdown>
             </li>
@@ -47,7 +47,7 @@
     },
     computed:{
       getUname(){
-        return this.$store.getters.getUsername
+        return this.$store.state.userName
       },
       getImageUrl(){
         return this.$store.getters.getUserImage
@@ -62,9 +62,6 @@
       },
       toggleMenu() {
         this.showMenu = !this.showMenu;
-      },
-      logoutUser(){
-        this.$store.dispatch("logout")
       }
     }
   };

@@ -16,7 +16,8 @@ export const store = new Vuex.Store({
         userTwitterId: "",
         userTwitterDescription: "",
         access_token: "",
-        access_secret: ""
+        access_secret: "",
+        userData:[]
     },
     getters:{
         authenticated (state) {
@@ -26,10 +27,7 @@ export const store = new Vuex.Store({
           var str = state.userImgUrl;
           var mod = str.replace("_normal","_400x400")
           return mod;
-      },
-        getUsername(state){
-            state.userName
-        }
+      }
     },
     mutations: {
         authenticated:(state, payload)=> {
@@ -46,6 +44,9 @@ export const store = new Vuex.Store({
         },
         setUsername:(state,payload)=>{
             state.userName = payload
+        },
+        setUserData:(state,payload)=>{
+            state.userData = payload
         }
 },
 actions: {
@@ -72,6 +73,9 @@ actions: {
             
         }
         )
+      },
+      logout(){
+          router.push('login')
       }
     }
 });

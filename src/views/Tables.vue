@@ -67,10 +67,10 @@
     },
     computed:{
         getUserFullImage(){
-           return this.$store.getters.getUserImageFull
+           return this.$store.getters.getUserImage
         },
         getUsername(){
-           return this.$store.getters.getUsername
+           return this.$store.state.userName
         }
     }
   };

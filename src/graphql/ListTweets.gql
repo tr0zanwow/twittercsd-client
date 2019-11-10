@@ -10,6 +10,7 @@ query search{
           description
           profile_image_url
           tweets_count
+          followers_count
         }
       }
     }

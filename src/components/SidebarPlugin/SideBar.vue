@@ -11,8 +11,9 @@
               <template v-slot="{result:{loading,error,data}}">
             <div v-if="!loading" class="navbar-collapse collapse show" id="sidenav-collapse-main">
                 <h6 class="navbar-heading text-muted">Recent Tweets</h6>
-                <ul v-for="tweetUsers in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
-                    <li class="nav-item">
+                <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
+                    <li class="nav-item" 
+                    :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
                         <a class="nav-link" href="#/">
                         <span class="avatar avatar-sm rounded-circle">
                           <img v-bind:alt="tweetUsers.user.name" v-bind:src="tweetUsers.user.profile_image_url">
@@ -27,16 +28,17 @@
     </nav>
 </template>
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 #twitterName{
-    font-family: 'Karla', sans-serif;
-    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
     margin-left: 8px;
     display:inline-block; 
     text-overflow:ellipsis;
     overflow:hidden; 
     width:80%;
+    color:rgba(22, 22, 22, 0.74);
     font-size: 15px;
 }
 .nav-item{
@@ -45,17 +47,25 @@
   margin-top: -5px;
   margin-bottom: -5px;
   &.nav-item:hover{
-    background-color: rgba(21, 223, 105, 0.11);
+    background-color: rgba(71, 71, 71, 0.062);
   };
+  &.active{
+  background-color: #2dce89; 
+    &.nav-item:hover{
+    background-color: #2dce89;
+  }
+  #twitterName{
+    color: rgba(255, 255, 255, 0.897);
+  }
+    }
 }
+
+
 
 .nav-link{
   margin-left: -15px
 }
-   
-.nav-item > active{
-  color: rgb(18, 214, 106);
-}
+
 
 </style>
 <script>
@@ -68,6 +78,7 @@
     },
     data(){
       return{
+        activeItemId: ''
       }
     },
     props: {
@@ -91,8 +102,14 @@
       closeSidebar() {
         this.$sidebar.displaySidebar(false)
       },
+      setActiveItemId(itemIndex) {
+        this.activeItemId = itemIndex;
+      },
       showSidebar() {
         this.$sidebar.displaySidebar(true)
+      },
+      setUserData(data){
+        this.$store.commit("setUserData",data);
       }
     },
     beforeDestroy() {
