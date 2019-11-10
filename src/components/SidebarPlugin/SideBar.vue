@@ -30,15 +30,15 @@
     </nav>
 </template>
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Rubik:400,500&display=swap');
 
 #listItemHref{
   cursor: pointer;
 }
 
 #twitterName{
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
     margin-left: 8px;
     display:inline-block; 
     text-overflow:ellipsis;
@@ -56,12 +56,13 @@
     background-color: rgba(71, 71, 71, 0.062);
   };
   &.active{
-  background-color: #2dce89; 
+  background-color: #1180EF; 
     &.nav-item:hover{
-    background-color: #2dce89;
+    background-color: #1180EF;
   }
   #twitterName{
-    color: rgba(255, 255, 255, 0.897);
+    color: rgba(255, 255, 255, 0.925);
+    
   }
     }
 }
