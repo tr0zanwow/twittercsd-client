@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header border-0">
+    <div class="card-body border-0">
       <div class="row align-items-center">
         <div class="col">
           <h3 class="mb-0">Page visits</h3>
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="table-responsive">
+    <!-- <div class="table-responsive">
       <base-table thead-classes="thead-light"
                   :data="tableData">
         <template slot="columns">
@@ -40,7 +40,7 @@
         </template>
 
       </base-table>
-    </div>
+    </div> -->
 
   </div>
 </template>

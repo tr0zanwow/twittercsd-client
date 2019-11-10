@@ -6,6 +6,7 @@
         <slot>
           <h5 class="card-title text-uppercase text-muted mb-0" v-if="title">{{title}}</h5>
           <span class="h2 font-weight-bold mb-0" v-if="subTitle">{{subTitle}}</span>
+          <span id="twitterUserDescription" class="h2 font-weight-bold mb-0" v-if="description">{{description}}</span>
         </slot>
       </div>
 
@@ -35,6 +36,9 @@ h5{
 span{
     font-family: 'Open Sans', sans-serif;
 }
+#twitterUserDescription{
+    font-size: 14px;
+}
 </style>
 <script>
   import Card from './Card.vue';
@@ -52,7 +56,8 @@ span{
       icon: String,
       title: String,
       subTitle: String,
-      iconClasses: [String, Array]
+      iconClasses: [String, Array],
+      description: String
     }
   };
 </script>

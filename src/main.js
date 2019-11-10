@@ -5,14 +5,21 @@ import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import * as firebase from "firebase/app";
 import { store } from "./store/store.js"
+import { createProvider } from './vue-apollo'
+import vueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false
-
+Vue.use(vueCookies)
 Vue.use(ArgonDashboard)
+
+vueCookies.config('7d')
+
 new Vue({
   router,
   store,
+  vueCookies,
   render: h => h(App),
+  apolloProvider: createProvider(),
   created() {
     firebase.initializeApp({
       apiKey: "AIzaSyBJ0cbWMWODy8HIvU_9YI5XAM8XTlIJkOY",

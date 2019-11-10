@@ -9,7 +9,6 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state:{
         title:"Twitter CSD",
-        tweet_id: "",
         showModal: false,
         isAuthenticated: false,
         userImgUrl: "",
@@ -20,14 +19,6 @@ export const store = new Vuex.Store({
         access_secret: ""
     },
     getters:{
-        tweet_id(state) {
-            if(state.tweet_id == ""){
-               
-            }
-            else{
-            return state.tweet_id;
-            }
-        },
         authenticated (state) {
             return state.isAuthenticated
         },
@@ -35,12 +26,12 @@ export const store = new Vuex.Store({
           var str = state.userImgUrl;
           var mod = str.replace("_normal","_400x400")
           return mod;
-      }
+      },
+        getUsername(state){
+            state.userName
+        }
     },
     mutations: {
-        setTweetId: (state, newValue) => {
-            state.tweet_id = newValue
-        },
         authenticated:(state, payload)=> {
             state.isAuthenticated = payload
         },
@@ -52,6 +43,9 @@ export const store = new Vuex.Store({
         setCredentials:(state,payload) =>{
             state.access_token = payload.access_token,
             state.access_secret = payload.access_secret
+        },
+        setUsername:(state,payload)=>{
+            state.userName = payload
         }
 },
 actions: {
@@ -70,7 +64,7 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            router.push('dashboard')
+            router.push({name: 'dashboard',params: {isAuthenticated: true}})
 
         })
         .catch(function(error) {

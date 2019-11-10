@@ -7,7 +7,7 @@
                     <stats-card title="Name"
                                 type="gradient-red"
                                 sub-title="350,897"
-                                icon="ni ni-active-40"
+                                icon="fa fa-user"
                                 class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -16,7 +16,7 @@
                     <stats-card title="Screen Name"
                                 type="gradient-orange"
                                 sub-title="2,356"
-                                icon="ni ni-chart-pie-35"
+                                icon="fa fa-at"
                                 class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -25,7 +25,7 @@
                     <stats-card title="Tweet Count"
                                 type="gradient-green"
                                 sub-title="924"
-                                icon="ni ni-money-coins"
+                                icon="fa fa-sort"
                                 class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -35,7 +35,7 @@
                     <stats-card title="Followers"
                                 type="gradient-info"
                                 sub-title="49,65%"
-                                icon="ni ni-chart-bar-32"
+                                icon="fa fa-users"
                                 class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -47,10 +47,10 @@
             <!--Tables-->
             <div class="row mt-0">
                 <div class="col-xl-12 col-lg-6">
-                    <stats-card title="Tweet Count"
-                                type="gradient-green"
-                                sub-title="924"
-                                icon="ni ni-money-coins"
+                    <stats-card title="Description"
+                                type="gradient-blue"
+                                description="924"
+                                icon="fa fa-sticky-note"
                                 class="mb-4 mb-xl-0">
                     </stats-card>
 
