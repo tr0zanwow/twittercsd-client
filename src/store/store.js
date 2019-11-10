@@ -27,7 +27,22 @@ export const store = new Vuex.Store({
           var str = state.userImgUrl;
           var mod = str.replace("_normal","_400x400")
           return mod;
-      }
+        },
+        getUsername(state){
+            return state.userData.user.name
+        },
+        getScreenName(state){
+            return state.userData.user.screen_name
+        },
+        getTweetCount(state){
+            return state.userData.user.tweets_count
+        },
+        getFollowerCount(state){
+            return state.userData.user.followers_count
+        },
+        getDescription(state){
+            return state.userData.user.description
+        }
     },
     mutations: {
         authenticated:(state, payload)=> {
@@ -65,7 +80,7 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            router.push({name: 'dashboard',params: {isAuthenticated: true}})
+            router.push({name: 'tables',params: {isAuthenticated: true}})
 
         })
         .catch(function(error) {
@@ -75,7 +90,8 @@ actions: {
         )
       },
       logout(){
-          router.push('login')
+            commit("authenticated",false)
+            router.push('login')
       }
     }
 });

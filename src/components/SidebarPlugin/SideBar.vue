@@ -7,28 +7,34 @@
             </router-link>
 
             <slot></slot>
-            <ApolloQuery :query="require('../../graphql/ListTweets.gql')">
-              <template v-slot="{result:{loading,error,data}}">
-            <div v-if="!loading" class="navbar-collapse collapse show" id="sidenav-collapse-main">
-                <h6 class="navbar-heading text-muted">Recent Tweets</h6>
-                <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
-                    <li class="nav-item" 
-                    :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
-                        <a class="nav-link" href="#/">
-                        <span class="avatar avatar-sm rounded-circle">
-                          <img v-bind:alt="tweetUsers.user.name" v-bind:src="tweetUsers.user.profile_image_url">
-                        </span><span id="twitterName">{{tweetUsers.user.name}}</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            </template>
+            
+              <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
+                  <h6 class="navbar-heading text-muted">Recent Tweets</h6>
+                  <ApolloQuery :query="require('../../graphql/ListTweets.gql')">
+                    <template v-slot="{result:{loading,error,data}}">
+                  <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
+                      <li class="nav-item" 
+                      :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
+                          <a id="listItemHref" class="nav-link">
+                          <span class="avatar avatar-sm rounded-circle">
+                            <img v-bind:alt="tweetUsers.user.name" v-bind:src="tweetUsers.user.profile_image_url">
+                          </span><span id="twitterName">{{tweetUsers.user.name}}</span>
+                          </a>
+                      </li>
+                  </ul>
+                  </template>
             </ApolloQuery>
+              </div>
+
             </div>
     </nav>
 </template>
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+#listItemHref{
+  cursor: pointer;
+}
 
 #twitterName{
     font-family: 'Open Sans', sans-serif;
@@ -60,12 +66,9 @@
     }
 }
 
-
-
 .nav-link{
   margin-left: -15px
 }
-
 
 </style>
 <script>
@@ -78,7 +81,7 @@
     },
     data(){
       return{
-        activeItemId: ''
+        activeItemId: '1'
       }
     },
     props: {
@@ -110,6 +113,7 @@
       },
       setUserData(data){
         this.$store.commit("setUserData",data);
+        this.$router.push({name: 'dashboard', params: { isSet: true}})
       }
     },
     beforeDestroy() {

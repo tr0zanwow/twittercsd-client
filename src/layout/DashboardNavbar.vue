@@ -25,10 +25,10 @@
                             <span>My profile</span>
                         </router-link>
                         <div class="dropdown-divider"></div>
-                        <router-link to="/profile" class="dropdown-item">
+                        <a href="/#/" @click="logout" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
-                        </router-link>
+                        </a>
                     </template>
                 </base-dropdown>
             </li>
@@ -62,6 +62,9 @@
       },
       toggleMenu() {
         this.showMenu = !this.showMenu;
+      },
+      logout(){
+        this.$store.dispatch("logout");
       }
     }
   };

@@ -24,25 +24,16 @@ export default new Router({
         {
           path: '/dashboard',
           name: 'dashboard',
-          // route level code-splitting
-          // this generates a separate chunk (about.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
-          component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue')
-        },
-        {
-          path: '/icons',
-          name: 'icons',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Icons.vue')
-        },
-        {
-          path: '/profile',
-          name: 'profile',
-          component: () => import(/* webpackChunkName: "demo" */ './views/UserProfile.vue')
-        },
-        {
-          path: '/maps',
-          name: 'maps',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Maps.vue')
+          component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue'),
+          props: true,
+          beforeEnter: (to, from, next) => {
+          if(to.params.isSet){
+            next()
+          }
+          else{
+            next({name: 'tables'})
+          }
+        }
         },
         {
           path: '/tables',
@@ -50,23 +41,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "demo" */ './views/Tables.vue')
         }
       ]
+      
     },
     {
-      path: '/',
-      redirect: 'login',
-      component: AuthLayout,
-      children: [
-        {
-          path: '/login',
-          name: 'login',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Login.vue')
-        },
-        {
-          path: '/register',
-          name: 'register',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Register.vue')
-        }
-      ]
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "demo" */ './views/Login.vue')
     }
   ]
 })

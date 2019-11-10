@@ -45,7 +45,7 @@
 
         <div class="container-fluid mt--8">
             <!--Tables-->
-            <div class="row mt-0">
+            <div class="row mt-0" v-if="getDescription!='nodata'">
                 <div class="col-xl-12 col-lg-6">
                     <stats-card title="Description"
                                 type="gradient-blue"
@@ -81,20 +81,19 @@
     },
     computed:{
         getUserName(){
-            this.$store.state.userData.user.name
-            console.log(this.$store.state.userData.user.name)
+            return this.$store.getters.getUsername
         },
         getScreenName(){
-            this.$store.state.userData.user.screen_name
-        },
+            return this.$store.getters.getScreenName
+           },
         getTweetCount(){
-            this.$store.state.userData.user.tweets_count
+            return this.$store.getters.getTweetCount.toString()
         },
         getFollowersCount(){
-            this.$store.state.userData.user.followers_count
+            return this.$store.getters.getFollowerCount.toString()
         },
         getDescription(){
-            this.$store.state.userData.user.description
+            return this.$store.getters.getDescription 
         }
     },
     methods: {

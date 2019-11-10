@@ -1,5 +1,28 @@
 <template>
-        <div class="row justify-content-center">
+<div id="loginContainer" class="main-content bg-default">
+        <base-nav class="navbar-top navbar-horizontal navbar-dark"
+                  containerClasses="px-4 container"
+                  expand>
+            <router-link slot="brand" class="navbar-brand" to="/">
+                <strong id="brandTitle">Twitter CSD</strong>
+            </router-link>
+
+        </base-nav>
+        <div class="header bg-gradient-success py-7 py-lg-8">
+            <div class="container">
+                <div class="header-body text-center mb-7">
+                </div>
+            </div>
+            <div class="separator separator-bottom separator-skew zindex-100">
+                <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+                </svg>
+            </div>
+        </div>
+        <div id="pageContainer" class="container mt--9 pb-9">
+            <slide-y-up-transition mode="out-in" origin="center top">
+                <div class="row justify-content-center">
             <div class="col-lg-6 col-md-7">
                 <div class="card bg-secondary shadow border-0">
                     <div class="card-header bg-transparent pb-5">
@@ -19,9 +42,12 @@
                         <div class="">A web app to efficiently manages tweet replies, list recent tweets and much more actions in just one platform</div>
                     </div>
                 </div>
-            
             </div>
         </div>
+            </slide-y-up-transition>
+        </div>
+        
+    </div>
 </template>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
