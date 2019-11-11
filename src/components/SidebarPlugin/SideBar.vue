@@ -3,7 +3,8 @@
         <div class="container-fluid">
 
             <router-link class="navbar-brand" to="/">
-                <strong id="brandTitle">Twitter CSD</strong>
+                <strong id="brandTitle">Twitter CSD</strong><br>
+                <p id="brandSubtitle"><small>Customer Support Desk</small></p>
             </router-link>
 
             <slot></slot>
@@ -35,7 +36,13 @@
 #listItemHref{
   cursor: pointer;
 }
-
+#brandSubtitle{
+font-family: 'Montserrat', sans-serif;
+margin-top: -5px;
+}
+#sidenav-collapse-main{
+margin-top: -30px;
+}
 #twitterName{
     font-family: 'Rubik', sans-serif;
     font-weight: 500;

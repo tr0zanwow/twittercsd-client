@@ -47,6 +47,7 @@
     </base-header>
 
     <div class="container-fluid mt--8">
+        
       <div class="row mt-0" v-if="getDescription != ''">
         <div class="col-xl-12 col-lg-6">
           <stats-card
@@ -101,10 +102,10 @@
             <div class="card-body border-0">
                 <div class="row">
                     <div class="col-xl-11 col-lg-6">
-                        <textarea class="form-control" id="tweetToSendTextArea" rows="1" :placeholder="getScreenNameForInputArea"></textarea>
+                        <textarea v-model="tweetText" class="form-control" id="tweetToSendTextArea" rows="1" :placeholder="getScreenNameForInputArea"></textarea>
                     </div>
                     <div class="col-xl-1 col-lg-6">
-                        <button class="btn btn-icon btn-2 btn-primary" type="button">
+                        <button class="btn btn-icon btn-2 btn-primary" @click="sendTweet" type="button">
                             <span class="btn-inner--icon"><i class="fa fa-paper-plane"></i></span>
                         </button>
                     </div>
@@ -114,6 +115,19 @@
         </div>
       </div>
     </div>
+    <modal :show.sync="modal0" gradient="info" modal-classes="modal-danger modal-dialog-centered">
+        <h5 slot="header" class="modal-title" id="modal-title-notification">Your attention is required</h5>
+        
+        <div class="py-3 text-center">
+                <i class="fa fa-paper-plane fa-4x"></i>
+                <h4 class="heading mt-4">Confirmation</h4>
+                <p>Send: <br><strong>"{{tweetText}}"</strong><br><br>To: <br> <strong>@{{getScreenName}}</strong><br></p>
+            </div>
+        <template slot="footer">
+                <base-button type="primary" >Send</base-button>
+                <base-button type="danger" class="ml-auto" @click="modal0 = false">Close</base-button>
+            </template>
+   </modal>
   </div>
 </template>
 
@@ -147,12 +161,15 @@
 </style>
 
 <script>
+import Twit from 'twit'
 
   export default {
     components: {
     },
     data() {
       return {
+          modal0: false,
+          tweetText: ""
          };
     },
     computed:{
@@ -182,7 +199,14 @@
         }
     },
     methods: {
-      
+      sendTweet(){
+          if(this.tweetText==""){
+          alert("Please Enter some text to send")
+        }
+          else{
+            this.modal0 = true
+          }
+      }  
     },
     mounted() {
     }
