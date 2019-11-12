@@ -3,7 +3,8 @@
         <base-header type="gradient-info" class="pb-6 pb-8 pt-5 pt-md-8">
 
         </base-header>
-
+        <ApolloQuery :query="require('../graphql/getUserInfo.gql')" :variables="{idstr}">
+                    <template v-slot="{result:{loading,error,data}, isLoading}" >
         <div class="container-fluid mt--9">
             <div class="row justify-content-center">
                 <div class="col-xl-6 order-xl-2 mb-5 mb-xl-0">
@@ -26,11 +27,11 @@
                                 <div class="col">
                                     <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                         <div>
-                                            <span class="heading">10</span>
+                                            <span class="heading">{{data.twitter.user.tweets_count}}</span>
                                             <span class="description">Tweet Counts</span>
                                         </div>
                                         <div>
-                                            <span class="heading">89</span>
+                                            <span class="heading">{{data.twitter.user.followers_count}}</span>
                                             <span class="description">Follower Counts</span>
                                         </div>
                                     </div>
@@ -39,22 +40,24 @@
                             <div class="text-center">
                                 <h3>{{getUsername}}</h3>
                                 <div class="h5 font-weight-300">
-                                    <i class="fa fa-at"></i> rathod1337
+                                    <i class="fa fa-at"></i> {{data.twitter.user.screen_name}}
                                 </div>
                                 <div class="h5 mt-4">
                                     <i class="ni business_briefcase-24 mr-2"></i>Account Created
                                 </div>
                                 <div class="h5 font-weight-300">
-                                    <i class="ni education_hat mr-2"></i>Apr 24 2012
+                                    <i class="ni education_hat mr-2"></i>{{data.twitter.user.created_at}}
                                 </div>
                                 <hr class="my-4" />
-                                <p>Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs and records all of his own music.</p>
+                                <p>{{data.twitter.user.description}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </template>
+                </ApolloQuery>
 
     </div>
 </template>
@@ -65,6 +68,10 @@
     components: {
       ProjectsTable
     },
+     data(){
+      return{
+          idstr : this.$store.state.userTwitterId
+      }},
     computed:{
         getUserFullImage(){
            return this.$store.getters.getUserImage

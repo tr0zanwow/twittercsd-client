@@ -11,6 +11,7 @@
             
               <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
                   <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Tweets</h6>
+                  
                   <ApolloQuery :query="require('../../graphql/ListTweets.gql')">
                     <template v-slot="{result:{loading,error,data}, isLoading}">
                   <div id="progressloader" v-if="isLoading">
@@ -29,7 +30,8 @@
                   </ul>
                   </div>
                   </template>
-            </ApolloQuery>
+                </ApolloQuery>
+                
               </div>
             </div>
             
@@ -120,8 +122,8 @@ overflow: auto;
         color: '#1180EF',
         size: '25px',
         margin: '2px',
-        radius: '2px'
-
+        radius: '2px',
+        idstr : '562116157'
       }
     },
     props: {
@@ -142,6 +144,9 @@ overflow: auto;
       };
     },
     methods: {
+      getUserData(val){
+        console.log('Called function getuserdata()')
+      },
       closeSidebar() {
         this.$sidebar.displaySidebar(false)
       },

@@ -37,7 +37,7 @@ const defaultOptions = {
   // link: myLink
 
   // Override default cache
-  // cache: myCache
+  cache: myCache
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
@@ -63,7 +63,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        // fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'cache-and-network',
       },
     },
     errorHandler (error) {

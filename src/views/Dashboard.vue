@@ -46,9 +46,9 @@
       </div>
     </base-header>
 
-    <div class="container-fluid mt--8">
+    <div class="container-fluid mt--8 position-sticky">
         
-      <div class="row mt-0" v-if="getDescription != ''">
+      <!-- <div class="row mt-0" v-if="getDescription != ''">
         <div class="col-xl-12 col-lg-6">
           <stats-card
             title="Description"
@@ -59,7 +59,7 @@
           >
           </stats-card>
         </div>
-      </div>
+      </div> -->
       <div class="row mt-3">
         <div class="col-xl-12 mb-5 mb-xl-0">
           <div class="card">
@@ -96,7 +96,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-1">
+      <div id="textBoxContainer" class="row mt-1">
         <div class="col-xl-12 col-lg-6">
           <div class="card">
             <div class="card-body border-0">
@@ -124,8 +124,8 @@
                 <p>Send: <br><strong>"{{tweetText}}"</strong><br><br>To: <br> <strong>@{{getScreenName}}</strong><br></p>
             </div>
         <template slot="footer">
-                <base-button type="primary" >Send</base-button>
-                <base-button type="danger" class="ml-auto" @click="modal0 = false">Close</base-button>
+                <base-button type="default">Send</base-button>
+                <base-button type="secondary" class="ml-auto" @click="modal0 = false">Close</base-button>
             </template>
    </modal>
    <modal :show.sync="modalerror"
