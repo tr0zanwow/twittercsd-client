@@ -128,6 +128,19 @@
                 <base-button type="danger" class="ml-auto" @click="modal0 = false">Close</base-button>
             </template>
    </modal>
+   <modal :show.sync="modalerror"
+               gradient="danger"
+               modal-classes="modal-danger modal-dialog-centered">
+            <h6 slot="header" class="modal-title" id="modal-title-notification">Alert: Tweet body cannot be blank</h6>
+
+            <div class="py-3 text-center">
+                <h4 class="heading mt-4">Please enter some text to send</h4>
+            </div>
+
+            <template slot="footer">
+                <base-button @click="modalerror = false" type="white">Ok</base-button>
+            </template>
+        </modal>
   </div>
 </template>
 
@@ -169,11 +182,13 @@ import Twit from 'twit'
     data() {
       return {
           modal0: false,
+          modalerror: false,
           tweetText: ""
          };
     },
     computed:{
         getUserName(){
+            this.tweetText = ""
             return this.$store.getters.getUsername
         },
         getScreenName(){
@@ -201,7 +216,7 @@ import Twit from 'twit'
     methods: {
       sendTweet(){
           if(this.tweetText==""){
-          alert("Please Enter some text to send")
+          this.modalerror = true
         }
           else{
             this.modal0 = true

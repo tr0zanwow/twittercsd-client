@@ -17,10 +17,10 @@ Vue.use(cors)
 vueCookies.config('7d')
 
 new Vue({
+  render: h => h(App),
   router,
   store,
   vueCookies,
-  render: h => h(App),
   apolloProvider: createProvider(),
   created() {
     firebase.initializeApp({

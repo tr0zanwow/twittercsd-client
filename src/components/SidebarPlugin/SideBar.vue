@@ -10,10 +10,14 @@
             <slot></slot>
             
               <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
-                  <h6 class="navbar-heading text-muted">Recent Tweets</h6>
+                  <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Tweets</h6>
                   <ApolloQuery :query="require('../../graphql/ListTweets.gql')">
-                    <template v-slot="{result:{loading,error,data}}">
-                  <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
+                    <template v-slot="{result:{loading,error,data}, isLoading}">
+                  <div id="progressloader" v-if="isLoading">
+                      <sync-loader :loading="isLoading?true:false" :color="color" :size="size"></sync-loader>
+                  </div>
+                  <div v-else>
+                    <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
                       <li class="nav-item" 
                       :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
                           <a id="listItemHref" class="nav-link">
@@ -23,25 +27,46 @@
                           </a>
                       </li>
                   </ul>
+                  </div>
                   </template>
             </ApolloQuery>
               </div>
-
             </div>
+            
     </nav>
 </template>
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Rubik:400,500&display=swap');
 
+.container-fluid{
+  display: flex;
+  align-items: flex-start;
+}
+
+#progressloader{
+  margin: 0;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-55%, -50%);
+}
+
 #listItemHref{
   cursor: pointer;
 }
+
+#sidenav-main{
+  height: 100%;
+  overflow: auto;
+}
+
 #brandSubtitle{
 font-family: 'Montserrat', sans-serif;
 margin-top: -5px;
 }
 #sidenav-collapse-main{
 margin-top: -30px;
+overflow: auto;
 }
 #twitterName{
     font-family: 'Rubik', sans-serif;
@@ -81,15 +106,22 @@ margin-top: -30px;
 </style>
 <script>
   import NavbarToggleButton from '@/components/NavbarToggleButton'
+  import { SyncLoader } from 'vue-spinner/dist/vue-spinner.min.js'
 
   export default {
     name: 'sidebar',
     components: {
-      NavbarToggleButton
+      NavbarToggleButton,
+      SyncLoader
     },
     data(){
       return{
-        activeItemId: '1'
+        activeItemId: '1',
+        color: '#1180EF',
+        size: '25px',
+        margin: '2px',
+        radius: '2px'
+
       }
     },
     props: {
