@@ -58,6 +58,10 @@
 #subHeader{
     font-family: 'Montserrat', sans-serif;
 }
+
+::-webkit-scrollbar{
+        display: none;
+}
 </style>
 <script>
   export default {

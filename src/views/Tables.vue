@@ -46,7 +46,7 @@
                                     <i class="ni business_briefcase-24 mr-2"></i>Account Created
                                 </div>
                                 <div class="h5 font-weight-300">
-                                    <i class="ni education_hat mr-2"></i>{{data.twitter.user.created_at}}
+                                    <i class="ni education_hat mr-2"></i>{{getCreatedAt(data.twitter.user.created_at)}}
                                 </div>
                                 <hr class="my-4" />
                                 <p>{{data.twitter.user.description}}</p>
@@ -78,6 +78,13 @@
         },
         getUsername(){
            return this.$store.state.userName
+        }
+    },
+    methods:{
+        getCreatedAt(data){
+            var temp = [];
+            temp = data.split(" ")
+            return temp[0]+' '+temp[1]+' '+temp[2]+' '+temp[5];
         }
     }
   };

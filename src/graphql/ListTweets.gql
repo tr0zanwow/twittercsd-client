@@ -1,10 +1,11 @@
-query search($screenname: String!){
+query search($screenname: String!,$tweetSize: Int!){
     twitter{
-      search(q: $screenname result_type:recent,count:20){
+      search(q: $screenname result_type:recent,count:$tweetSize){
         id_str
         created_at
         text
         user{
+          id_str
           name
           screen_name
           description

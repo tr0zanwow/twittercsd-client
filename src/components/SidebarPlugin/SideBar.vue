@@ -10,17 +10,17 @@
             <slot></slot>
             
               <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
-                  <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Mentions</h6>
+                  <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Tweets</h6>
                   <ApolloQuery :query="require('../../graphql/getUserInfo.gql')" :variables="{idstr}">
-                    <template v-slot="{result:{loading,error,data}, isLoading}" >
+                    <template v-slot="{result:{loading,error,data}, isLoading}" @done="getUserData(data)" >
                       <!-- '@'+data.twitter.user.screen_name} -->
-                  <ApolloQuery :query="require('../../graphql/ListTweets.gql')" :variables="{ screenname: '@LoganPaul'}">
+                  <ApolloQuery :query="require('../../graphql/ListTweets.gql')" :variables="{ screenname: '@LoganPaul', tweetSize}">
                     <template v-slot="{result:{loading,error,data}, isLoading}">
-                  <div id="progressloader" v-if="isLoading">
+                  <div id="progressloader" v-if="isLoading && loading">
                       <sync-loader :loading="isLoading?true:false" :color="color" :size="size"></sync-loader>
                   </div>
                   <div v-else>
-                    <ul v-for="(tweetUsers,itemIndex) in data.twitter.search" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
+                    <ul v-for="(tweetUsers,itemIndex) in filterData(data.twitter.search)" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
                       <li class="nav-item" 
                       :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
                           <a id="listItemHref" class="nav-link">
@@ -126,6 +126,7 @@ overflow: auto;
         size: '25px',
         margin: '2px',
         radius: '2px',
+        tweetSize: 30,
         idstr : this.$store.state.userTwitterId
       }
     },
@@ -147,8 +148,8 @@ overflow: auto;
       };
     },
     methods: {
-      getUserData(val){
-        console.log('Called function getuserdata()')
+      filterData(val){
+        console.log(val[0])
       },
       closeSidebar() {
         this.$sidebar.displaySidebar(false)
