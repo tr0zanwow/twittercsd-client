@@ -45,6 +45,11 @@ export const store = new Vuex.Store({
         },
         getTweetText(state){
             return state.userData.text
+        },
+        getLocalTime(state){
+            var strDateTime = "Fri, 18 Oct 2013 11:38:23 GMT"
+            var myDate = new Date(strDateTime)
+            var localdatetime = myDate.toLocaleString()
         }
     },
     mutations: {

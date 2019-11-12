@@ -7,12 +7,14 @@ import * as firebase from "firebase/app";
 import { store } from "./store/store.js"
 import { createProvider } from './vue-apollo'
 import vueCookies from 'vue-cookies'
+import axios from 'axios'
 import cors from 'cors'
 
 Vue.config.productionTip = false
 Vue.use(vueCookies)
 Vue.use(ArgonDashboard)
 Vue.use(cors)
+Vue.use(axios)
 
 vueCookies.config('7d')
 

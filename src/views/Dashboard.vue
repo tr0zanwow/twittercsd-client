@@ -105,7 +105,7 @@
                         <textarea v-model="tweetText" class="form-control" id="tweetToSendTextArea" rows="1" :placeholder="getScreenNameForInputArea"></textarea>
                     </div>
                     <div class="col-xl-1 col-lg-6">
-                        <button class="btn btn-icon btn-2 btn-primary" @click="sendTweet" type="button">
+                        <button class="btn btn-icon btn-2 btn-primary" @click="validate" type="button">
                             <span class="btn-inner--icon"><i class="fa fa-paper-plane"></i></span>
                         </button>
                     </div>
@@ -124,7 +124,7 @@
                 <p>Send: <br><strong>"{{tweetText}}"</strong><br><br>To: <br> <strong>@{{getScreenName}}</strong><br></p>
             </div>
         <template slot="footer">
-                <base-button type="default">Send</base-button>
+                <base-button @click="sendTweet" type="default">Send</base-button>
                 <base-button type="secondary" class="ml-auto" @click="modal0 = false">Close</base-button>
             </template>
    </modal>
@@ -174,6 +174,7 @@
 </style>
 
 <script>
+import axios from 'axios'
 import Twit from 'twit'
 
   export default {
@@ -214,13 +215,27 @@ import Twit from 'twit'
         }
     },
     methods: {
-      sendTweet(){
+      validate(){
           if(this.tweetText==""){
           this.modalerror = true
         }
           else{
             this.modal0 = true
           }
+      },
+      sendTweet(){
+        axios.post('https://twittercsdnew.herokuapp.com/sendTweet', {
+                    id: '1107667818944708609',
+                    statusText: 'Twitter API Bot',
+                    access_token: '562116157-qmGraijDrsVRI4yiam7S120oAGnDCIfuaDWPnmY1',
+                    access_token_secret: 'MFrdnzx506Bk1N3oz0F8J1ZcRBBBqBMwZoW9VfjGKQMbH',
+                })
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
       }  
     },
     mounted() {
