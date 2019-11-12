@@ -84,7 +84,6 @@ actions: {
             commit("setCredentials",credentials)
             commit("authenticated",true)
             router.push({name: 'profile',params: {isAuthenticated: true}})
-
         })
         .catch(function(error) {
             console.log(error);
@@ -92,7 +91,7 @@ actions: {
         }
         )
       },
-      logout(){
+      logout({commit}){
             commit("authenticated",false)
             router.push('login')
       }
