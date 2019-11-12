@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
 
 // Install the vue plugin
@@ -7,12 +8,17 @@ Vue.use(VueApollo)
 
 // Name of the localStorage item
 const AUTH_TOKEN = 'apollo-token'
+const cache = new InMemoryCache();
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://twittercsdnew.herokuapp.com/graphql'
 // Files URL root
 export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
-
+export const resolvers = {
+  Mutation: {
+      
+  }
+};
 Vue.prototype.$filesRoot = filesRoot
 
 // Config
@@ -37,16 +43,16 @@ const defaultOptions = {
   // link: myLink
 
   // Override default cache
-  cache: myCache
+  cache: cache,
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
 
   // Additional ApolloClient options
-  // apollo: { ... }
+  apollo: { cache },
 
   // Client local data (see apollo-link-state)
-  // clientState: { resolvers: { ... }, defaults: { ... } }
+  clientState: { resolvers }
 }
 
 // Call this in the Vue app file
@@ -73,32 +79,4 @@ export function createProvider (options = {}) {
   })
 
   return apolloProvider
-}
-
-// Manually call this when user log in
-export async function onLogin (apolloClient, token) {
-  if (typeof localStorage !== 'undefined' && token) {
-    localStorage.setItem(AUTH_TOKEN, token)
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-  try {
-    await apolloClient.resetStore()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (login)', 'color: orange;', e.message)
-  }
-}
-
-// Manually call this when user log out
-export async function onLogout (apolloClient) {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(AUTH_TOKEN)
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-  try {
-    await apolloClient.resetStore()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (logout)', 'color: orange;', e.message)
-  }
 }

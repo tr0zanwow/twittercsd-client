@@ -10,9 +10,11 @@
             <slot></slot>
             
               <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
-                  <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Tweets</h6>
-                  
-                  <ApolloQuery :query="require('../../graphql/ListTweets.gql')">
+                  <h6 id="stickyRecentTweet" class="navbar-heading text-muted">Recent Mentions</h6>
+                  <ApolloQuery :query="require('../../graphql/getUserInfo.gql')" :variables="{idstr}">
+                    <template v-slot="{result:{loading,error,data}, isLoading}" >
+                      <!-- '@'+data.twitter.user.screen_name} -->
+                  <ApolloQuery :query="require('../../graphql/ListTweets.gql')" :variables="{ screenname: '@LoganPaul'}">
                     <template v-slot="{result:{loading,error,data}, isLoading}">
                   <div id="progressloader" v-if="isLoading">
                       <sync-loader :loading="isLoading?true:false" :color="color" :size="size"></sync-loader>
@@ -31,7 +33,8 @@
                   </div>
                   </template>
                 </ApolloQuery>
-                
+                 </template>
+                </ApolloQuery>
               </div>
             </div>
             
@@ -123,7 +126,7 @@ overflow: auto;
         size: '25px',
         margin: '2px',
         radius: '2px',
-        idstr : '562116157'
+        idstr : this.$store.state.userTwitterId
       }
     },
     props: {

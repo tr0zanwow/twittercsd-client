@@ -1,6 +1,6 @@
-query search{
+query search($screenname: String!){
     twitter{
-      search(q:"@BBCNews" result_type:recent,count:20){
+      search(q: $screenname result_type:recent,count:20){
         id_str
         created_at
         text
