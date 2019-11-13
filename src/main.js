@@ -8,15 +8,17 @@ import { store } from "./store/store.js"
 import { createProvider } from './vue-apollo'
 import vueCookies from 'vue-cookies'
 import axios from 'axios'
-import cors from 'cors'
+import VueLodash from 'vue-lodash'
 
 Vue.config.productionTip = false
 Vue.use(vueCookies)
 Vue.use(ArgonDashboard)
-Vue.use(cors)
 Vue.use(axios)
 
 vueCookies.config('7d')
+
+const options = { name: '_' }
+Vue.use(VueLodash)
 
 new Vue({
   render: h => h(App),

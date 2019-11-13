@@ -1,41 +1,65 @@
 <template>
   <nav
     class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"
-    id="sidenav-main">
-
+    id="sidenav-main"
+  >
     <router-link class="navbar-brand" to="/">
-      <strong id="brandTitle">Twitter CSD</strong><br>
+      <strong id="brandTitle">Twitter CSD</strong><br />
       <p id="brandSubtitle"><small>Customer Support Desk</small></p>
     </router-link>
-    
-    <div class="navbar-collapse" id="sidenav-collapse-main">
-          <h6 class="navbar-heading text-muted">Recent Tweets</h6>
-          <ApolloQuery :query="require('../../graphql/getUserInfo.gql')" :variables="{idstr}">
-            <template v-slot="{result:{loading,error,data}, isLoading}" >
-              <!-- '@'+data.twitter.user.screen_name} -->
-          <ApolloQuery :query="require('../../graphql/ListTweets.gql')" :variables="{ screenname: '@LoganPaul', tweetSize}">
-            <template v-slot="{result:{loading,error,data}, isLoading}">
-          <div id="progressloader" v-if="isLoading && loading">
-              <sync-loader :loading="isLoading?true:false" :color="color" :size="size"></sync-loader>
-          </div>
-          <div  v-else>
-            <ul v-for="(tweetUsers,itemIndex) in getData(data.twitter.search)" :key="tweetUsers.id_str" class="navbar-nav mb-md-3">
-              <li class="nav-item" 
-              :class="{'active': activeItemId === itemIndex}" @click="setActiveItemId(itemIndex),setUserData(data.twitter.search[itemIndex])">
-                  <a id="listItemHref" class="nav-link">
-                  <span class="avatar avatar-sm rounded-circle">
-                    <img v-bind:alt="tweetUsers.user.name" v-bind:src="tweetUsers.user.profile_image_url">
-                  </span><span id="twitterName">{{tweetUsers.user.name}}</span>
-                  </a>
-              </li>
-          </ul>
-        </div>
-          </template>
-        </ApolloQuery>
-          </template>
-        </ApolloQuery>
-      </div>
 
+    <div class="navbar-collapse" id="sidenav-collapse-main">
+      <h6 id="recentLabel">Recent Tweets</h6>
+      <ApolloQuery
+        :query="require('../../graphql/getUserInfo.gql')"
+        :variables="{ idstr }"
+      >
+        <template v-slot="{ result: { loading, error, data }, isLoading }">
+          <!-- '@'+data.twitter.user.screen_name} -->
+          <ApolloQuery
+            :query="require('../../graphql/ListTweets.gql')"
+            :variables="{ screenname: '@abpmajhatv', tweetSize }"
+          >
+            <template
+              v-slot="{ result: { loading, error, data }, isLoading }"
+              :onDone="onDone"
+            >
+              <div id="progressloader" v-if="isLoading && loading">
+                <sync-loader
+                  :loading="isLoading ? true : false"
+                  :color="color"
+                  :size="size"
+                ></sync-loader>
+              </div>
+              <div class="my-2" v-else>
+                <ul
+                  v-for="(tweetUsers, itemIndex) in getData(data.twitter.search)"
+                  :key="tweetUsers.id_str"
+                  class="navbar-nav mb-md-3"
+                >
+                  <li
+                    class="nav-item"
+                    :class="{ active: activeItemId === itemIndex }"
+                    @click="
+                      setActiveItemId(itemIndex),
+                        setUserData(getData(data.twitter.search)[itemIndex])"
+                  >
+                    <a id="listItemHref" class="nav-link">
+                      <span class="avatar avatar-sm rounded-circle">
+                        <img
+                          v-bind:alt="tweetUsers.name"
+                          v-bind:src="tweetUsers.profile_image_url"
+                        /> </span
+                      ><span id="twitterName">{{ tweetUsers.name }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </template>
+          </ApolloQuery>
+        </template>
+      </ApolloQuery>
+    </div>
   </nav>
 </template>
 <style lang="scss" scoped>
@@ -57,13 +81,19 @@
   overflow: hidden;
 }
 
+#recentLabel {
+  margin-top: -1rem;
+  margin-left: -1rem;
+  font-size: 15px;
+}
+
 #brandSubtitle {
   font-family: "Montserrat", sans-serif;
   margin-top: -5px;
 }
 #sidenav-collapse-main {
-  margin-top: -25px;
-  height: 88vh;
+  margin-top: -2rem;
+  height: 86vh;
   overflow: auto;
 }
 #twitterName {
@@ -103,6 +133,7 @@
 <script>
 import NavbarToggleButton from "@/components/NavbarToggleButton";
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
+import _ from "vue-lodash";
 
 export default {
   name: "sidebar",
@@ -143,50 +174,54 @@ export default {
     getData(val) {
       var sortedData = [];
       var tempData = [];
+      var i = 0;
+      var j = 0;
+      var tempUser;
+      var findDupUserTweets;
+      var findFirstTweet;
+
       tempData.push(...val);
-      var temparray = {
-        id_str: tempData[0].user.id_str,
-        name: tempData[0].user.name,
-        screen_name: tempData[0].user.screen_name,
-        description: tempData[0].user.description,
-        profile_image_url: tempData[0].user.profile_image_url,
-        tweets_count: tempData[0].user.tweets_count,
-        followers_count: tempData[0].user.followers_count,
-        tweets: [
-          {
-            id_str: tempData[0].id_str,
-            created_at: tempData[0].created_at,
-            text: tempData[0].text
-          }
-        ]
-      };
-      var temparray1 = {
-        id_str: tempData[0].id_str,
-        created_at: tempData[0].created_at,
-        text: tempData[0].text
-      };
-      sortedData.push(temparray);
-      sortedData[0].tweets.push(temparray1);
-      console.log(sortedData);
-      return val;
-    },
-    closeSidebar() {
-      this.$sidebar.displaySidebar(false);
+      for (i = 0; i < tempData.length; i++) {
+        tempUser = {
+                  id_str: tempData[i].user.id_str,
+                  name: tempData[i].user.name,
+                  screen_name: tempData[i].user.screen_name,
+                  description: tempData[i].user.description,
+                  profile_image_url: tempData[i].user.profile_image_url,
+                  tweets_count: tempData[i].user.tweets_count,
+                  followers_count: tempData[i].user.followers_count,
+                  tweets: []
+                };
+
+            findFirstTweet = {
+                  id_str: tempData[i].id_str,
+                  created_at: tempData[i].created_at,
+                  text: tempData[i].text
+            };
+         sortedData.push(tempUser)
+         sortedData[i].tweets.push(findFirstTweet)   
+        for (j = i + 1; j < tempData.length; j++) {
+          if (tempData[i].user.id_str == tempData[j].user.id_str){
+            findDupUserTweets = {
+                  id_str: tempData[j].id_str,
+                  created_at: tempData[j].created_at,
+                  text: tempData[j].text
+            };
+            sortedData[i].tweets.push(findDupUserTweets)
+            tempData.splice(j,1)
+      }
+      }
+      }
+
+      return sortedData;
+      
     },
     setActiveItemId(itemIndex) {
       this.activeItemId = itemIndex;
     },
-    showSidebar() {
-      this.$sidebar.displaySidebar(true);
-    },
     setUserData(data) {
       this.$store.commit("setUserData", data);
       this.$router.push({ name: "dashboard", params: { isSet: true } });
-    }
-  },
-  beforeDestroy() {
-    if (this.$sidebar.showSidebar) {
-      this.$sidebar.showSidebar = false;
     }
   }
 };

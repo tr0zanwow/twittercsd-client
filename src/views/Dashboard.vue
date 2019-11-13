@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div> 
     <base-header type="gradient-info" class="pb-6 pb-9 pt-5 pt-md-9">
       <!-- Card stats -->
-      <div style="margin-top:-60px" class="row">
+      <div id="topContainer" class="row">
         <div class="col-xl-3 col-lg-6">
           <stats-card
             title="Name"
@@ -46,7 +46,7 @@
       </div>
     </base-header>
 
-    <div class="container-fluid mt--8 position-sticky">
+    <div class="container-fluid mt--9 position-sticky">
         
       <!-- <div class="row mt-0" v-if="getDescription != ''">
         <div class="col-xl-12 col-lg-6">
@@ -71,11 +71,15 @@
                   </span>
                 </div>
                 <div class="col-md-6  text-left">
-                  <span
-                    ><h3 id="tweetFrom" class="mb-5 tweetText">
+                  <h3 id="tweetFrom" class="mb-5 tweetText">
                       {{ getTweetText }}
-                    </h3></span
-                  >
+                    </h3><br>
+                </div>
+              </div>
+              <div  class="row justify-content-start">
+                <div class="col-md-1"></div>
+                <div class="col-md-2 text-left justify-content-start">
+                   <span><p id="tweetFromTime" class="text-left text-dark">3:30 PM 12 Jun 2019</p></span>
                 </div>
               </div>
               <!-- <div class="row justify-content-end">
@@ -148,20 +152,42 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito:700&display=swap");
 
 .tweetText {
-  font-size: 15px;
+  font-size: 0.9rem;
   font-family: "Nunito", sans-serif;
   font-weight: 700;
-  padding: 10px;
-  margin-top: -2px;
+  padding: 0.7rem;
   display: inline-block;
-  border-radius: 25px;
-  margin-top: 0px;
+  border-radius: 1.8rem;
+  // margin-top: -0.1rem;
   background-color: rgba(77, 77, 77, 0.096);
   color: rgba(0, 0, 0, 0.733);
 }
 
+// #deletebtn{
+// height: 40px;
+// width: 40px;
+// // padding: 0.5rem;
+// // margin-left: 15px;
+// // margin-top: 10px;
+// }
+
+#topContainer{
+  margin-top: -4.5rem;
+}
+
+#textBoxContainer{
+ 
+}
+
 #tweetTo {
-  margin-right: -35px;
+  margin-right: -3rem;
+}
+
+#tweetFromTime{
+  font-size: 10px;
+  margin-top: -2.5rem;
+  margin-left: -1rem;
+  font-weight: bold;
 }
 
 #tweetToSendTextArea{
@@ -169,7 +195,8 @@
 }
 
 #tweetFrom {
-  margin-left: -35px;
+  margin-left: -2rem;
+  margin-top: -0.3rem;
 }
 </style>
 
