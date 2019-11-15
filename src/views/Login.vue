@@ -51,16 +51,17 @@
 </template>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+::-webkit-scrollbar{
+        display: none;
+}
+
 #titleHeader{
     font-family: 'Montserrat', sans-serif;
     margin-top: 5px;
 }
 #subHeader{
     font-family: 'Montserrat', sans-serif;
-}
-
-::-webkit-scrollbar{
-        display: none;
 }
 </style>
 <script>

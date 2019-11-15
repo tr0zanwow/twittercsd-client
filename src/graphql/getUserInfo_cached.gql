@@ -10,9 +10,10 @@ query twitter($idstr: UserIdentity!) @client{
         url
         tweets_count
         followers_count
-          tweets(limit: 50) {
+          tweets(limit: 100) {
             id_str
             text
+            in_reply_to_status_id_str
           }
       }
     }

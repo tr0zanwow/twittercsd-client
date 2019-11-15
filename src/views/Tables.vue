@@ -70,7 +70,7 @@
     },
      data(){
       return{
-          idstr : this.$store.state.userTwitterId
+          idstr: "759251"
       }},
     computed:{
         getUserFullImage(){

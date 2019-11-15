@@ -29,28 +29,24 @@ export const store = new Vuex.Store({
           return mod;
         },
         getUsername(state){
-            return state.userData.user.name
+            return state.userData.name
         },
         getScreenName(state){
-            return state.userData.user.screen_name
+            return state.userData.screen_name
         },
         getTweetCount(state){
-            return state.userData.user.tweets_count
+            return state.userData.tweets_count
         },
         getFollowerCount(state){
-            return state.userData.user.followers_count
+            return state.userData.followers_count
         },
         getDescription(state){
-            return state.userData.user.description
+            return state.userData.description
         },
-        getTweetText(state){
-            return state.userData.text
-        },
-        getLocalTime(state){
-            var strDateTime = "Fri, 18 Oct 2013 11:38:23 GMT"
-            var myDate = new Date(strDateTime)
-            var localdatetime = myDate.toLocaleString()
+        getTweets(state){
+            return state.userData.tweets
         }
+        
     },
     mutations: {
         authenticated:(state, payload)=> {

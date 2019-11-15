@@ -7,9 +7,9 @@
       <strong id="brandTitle">Twitter CSD</strong><br />
       <p id="brandSubtitle"><small>Customer Support Desk</small></p>
     </router-link>
-
-    <div class="navbar-collapse" id="sidenav-collapse-main">
       <h6 id="recentLabel">Recent Tweets</h6>
+      <hr class="my-3">
+    <div class="navbar-collapse" id="sidenav-collapse-main">
       <ApolloQuery
         :query="require('../../graphql/getUserInfo.gql')"
         :variables="{ idstr }"
@@ -18,7 +18,7 @@
           <!-- '@'+data.twitter.user.screen_name} -->
           <ApolloQuery
             :query="require('../../graphql/ListTweets.gql')"
-            :variables="{ screenname: '@abpmajhatv', tweetSize }"
+            :variables="{ screenname: '@cnn', tweetSize }"
           >
             <template
               v-slot="{ result: { loading, error, data }, isLoading }"
@@ -31,11 +31,11 @@
                   :size="size"
                 ></sync-loader>
               </div>
-              <div class="my-2" v-else>
+              <div id="userListContainer" v-else>
                 <ul
                   v-for="(tweetUsers, itemIndex) in getData(data.twitter.search)"
                   :key="tweetUsers.id_str"
-                  class="navbar-nav mb-md-3"
+                  class="navbar-nav mb-3"
                 >
                   <li
                     class="nav-item"
@@ -65,6 +65,20 @@
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Rubik:400,500&display=swap");
 
+::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background-color: rgba(245, 245, 245, 0.151);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #1180ef; 
+}
 #progressloader {
   margin: 0;
   position: absolute;
@@ -81,6 +95,10 @@
   overflow: hidden;
 }
 
+#userListContainer{
+  margin-top:-1.6rem;
+}
+
 #recentLabel {
   margin-top: -1rem;
   margin-left: -1rem;
@@ -92,8 +110,8 @@
   margin-top: -5px;
 }
 #sidenav-collapse-main {
-  margin-top: -2rem;
-  height: 86vh;
+  margin-top: 0.5rem;
+  height: 77.2vh;
   overflow: auto;
 }
 #twitterName {
@@ -148,8 +166,9 @@ export default {
       size: "25px",
       margin: "2px",
       radius: "2px",
-      tweetSize: 30,
-      idstr: this.$store.state.userTwitterId
+      tweetSize: 100,
+      // idstr: this.$store.state.userTwitterId
+      idstr: "759251"
     };
   },
   props: {

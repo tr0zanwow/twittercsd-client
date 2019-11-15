@@ -13,6 +13,9 @@
     </div>
   </div>
 </template>
+<style lang="scss" scoped>
+
+</style>
 <script>
   import DashboardNavbar from './DashboardNavbar.vue';
   import ContentFooter from './ContentFooter.vue';
@@ -38,5 +41,3 @@
     }
   };
 </script>
-<style lang="scss">
-</style>

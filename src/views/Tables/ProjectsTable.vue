@@ -18,7 +18,7 @@
     <div class="table-responsive">
       <base-table class="table align-items-center table-flush"
                   :class="type === 'dark' ? 'table-dark': ''"
-                  :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
+                  :thead-classes="type === 'thead-light'"
                   tbody-classes="list"
                   :data="tableData">
         <template slot="columns">
@@ -99,11 +99,6 @@
       </base-table>
     </div>
 
-    <div class="card-footer d-flex justify-content-end"
-         :class="type === 'dark' ? 'bg-transparent': ''">
-      <base-pagination total="30"></base-pagination>
-    </div>
-
   </div>
 </template>
 <script>
@@ -118,6 +113,22 @@
     data() {
       return {
         tableData: [
+          {
+            img: 'img/theme/bootstrap.jpg',
+            title: 'Argon Design System',
+            budget: '$2500 USD',
+            status: 'pending',
+            statusType: 'warning',
+            completion: 60
+          },
+          {
+            img: 'img/theme/bootstrap.jpg',
+            title: 'Argon Design System',
+            budget: '$2500 USD',
+            status: 'pending',
+            statusType: 'warning',
+            completion: 60
+          },
           {
             img: 'img/theme/bootstrap.jpg',
             title: 'Argon Design System',

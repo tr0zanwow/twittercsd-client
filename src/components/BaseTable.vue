@@ -1,12 +1,5 @@
 <template>
   <table class="table tablesorter" :class="tableClass">
-    <thead :class="theadClasses">
-      <tr>
-        <slot name="columns" :columns="columns">
-          <th v-for="column in columns" :key="column">{{ column }}</th>
-        </slot>
-      </tr>
-    </thead>
     <tbody :class="tbodyClasses">
       <tr v-for="(item, index) in data" :key="index">
         <slot :row="item" :index="index">

@@ -1,8 +1,8 @@
 <template>
-  <div> 
-    <base-header type="gradient-info" class="pb-6 pb-9 pt-5 pt-md-9">
-      <!-- Card stats -->
-      <div id="topContainer" class="row">
+  <div >
+
+    <base-header type="gradient-info" class="pb-6 pt-1 pt-md-9">
+      <div id="topContainer" class="row mt--7 mb-2">
         <div class="col-xl-3 col-lg-6">
           <stats-card
             title="Name"
@@ -46,172 +46,93 @@
       </div>
     </base-header>
 
-    <div class="container-fluid mt--9 position-sticky">
-        
-      <!-- <div class="row mt-0" v-if="getDescription != ''">
-        <div class="col-xl-12 col-lg-6">
-          <stats-card
-            title="Description"
-            type="gradient-blue"
-            :description="getDescription"
-            icon="fa fa-sticky-note"
-            class="mb-4 mb-xl-0"
-          >
-          </stats-card>
-        </div>
-      </div> -->
-      <div class="row mt-3">
-        <div class="col-xl-12 mb-5 mb-xl-0">
-          <div class="card">
-            <div class="card-body border-0">
-              <div class="row justify-content-start">
-                <div class="col-md-1 text-left justify-content-start">
-                  <span class="avatar avatar-l rounded-circle">
-                    <img v-bind:src="getUserImageURL" />
-                  </span>
-                </div>
-                <div class="col-md-6  text-left">
-                  <h3 id="tweetFrom" class="mb-5 tweetText">
-                      {{ getTweetText }}
-                    </h3><br>
-                </div>
-              </div>
-              <div  class="row justify-content-start">
-                <div class="col-md-1"></div>
-                <div class="col-md-2 text-left justify-content-start">
-                   <span><p id="tweetFromTime" class="text-left text-dark">3:30 PM 12 Jun 2019</p></span>
-                </div>
-              </div>
-              <!-- <div class="row justify-content-end">
-                <div class="col-md-6 text-right">
-                  <span
-                    ><h3 id="tweetTo" class="mb-3 tweetText">
-                      {{ getTweetText }}
-                    </h3></span
-                  >
-                </div>
-                <div class="col-md-1  text-right justify-content-end">
-                  <span class="avatar avatar-l rounded-circle">
-                    <img v-bind:src="getUserImageURL" />
-                  </span>
-                </div>
-              </div> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="textBoxContainer" class="row mt-1">
-        <div class="col-xl-12 col-lg-6">
-          <div class="card">
-            <div class="card-body border-0">
-                <div class="row">
-                    <div class="col-xl-11 col-lg-6">
-                        <textarea v-model="tweetText" class="form-control" id="tweetToSendTextArea" rows="1" :placeholder="getScreenNameForInputArea"></textarea>
-                    </div>
-                    <div class="col-xl-1 col-lg-6">
-                        <button class="btn btn-icon btn-2 btn-primary" @click="validate" type="button">
-                            <span class="btn-inner--icon"><i class="fa fa-paper-plane"></i></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-          </div>
+    <div class="wrapper container-fluid mt--6 mb-2" >
+    <div class="row">
+        <div class="col-lg-12 align-items-stretch" >
+          <projects-table title="Light Table" style="max-height:28rem"></projects-table>
         </div>
       </div>
     </div>
-    <modal :show.sync="modal0" gradient="info" modal-classes="modal-danger modal-dialog-centered">
-        <h5 slot="header" class="modal-title" id="modal-title-notification">Your attention is required</h5>
-        
-        <div class="py-3 text-center">
-                <i class="fa fa-paper-plane fa-4x"></i>
-                <h4 class="heading mt-4">Confirmation</h4>
-                <p>Send: <br><strong>"{{tweetText}}"</strong><br><br>To: <br> <strong>@{{getScreenName}}</strong><br></p>
-            </div>
-        <template slot="footer">
-                <base-button @click="sendTweet" type="default">Send</base-button>
-                <base-button type="secondary" class="ml-auto" @click="modal0 = false">Close</base-button>
-            </template>
-   </modal>
-   <modal :show.sync="modalerror"
-               gradient="danger"
-               modal-classes="modal-danger modal-dialog-centered">
-            <h6 slot="header" class="modal-title" id="modal-title-notification">Alert: Tweet body cannot be blank</h6>
 
-            <div class="py-3 text-center">
-                <h4 class="heading mt-4">Please enter some text to send</h4>
-            </div>
-
-            <template slot="footer">
-                <base-button @click="modalerror = false" type="white">Ok</base-button>
-            </template>
-        </modal>
   </div>
 </template>
-
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css?family=Nunito:700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Rubik:400,500&display=swap");
 
-.tweetText {
-  font-size: 0.9rem;
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
-  padding: 0.7rem;
-  display: inline-block;
-  border-radius: 1.8rem;
-  // margin-top: -0.1rem;
-  background-color: rgba(77, 77, 77, 0.096);
-  color: rgba(0, 0, 0, 0.733);
+.wrapper{
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+}
+#scrollBody::-webkit-scrollbar {
+    display: block;
+    width: 10px;
+}
+#scrollBody::-webkit-scrollbar-track {
+    background-color: rgba(245, 245, 245, 0.151);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+#scrollBody::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #11CCEE; 
+}
+#userInfoContainer{
+font-family: "Montserrat", sans-serif;
 }
 
-// #deletebtn{
-// height: 40px;
-// width: 40px;
-// // padding: 0.5rem;
-// // margin-left: 15px;
-// // margin-top: 10px;
-// }
-
-#topContainer{
-  margin-top: -4.5rem;
+.userInfoTextColor
+{
+  color: #043949e8;
 }
 
-#textBoxContainer{
- 
-}
-
-#tweetTo {
-  margin-right: -3rem;
-}
-
-#tweetFromTime{
-  font-size: 10px;
-  margin-top: -2.5rem;
-  margin-left: -1rem;
-  font-weight: bold;
-}
-
-#tweetToSendTextArea{
-  resize: none;
-}
-
-#tweetFrom {
-  margin-left: -2rem;
+.textDateTime{
+  font-family: "Rubik", sans-serif;
+  font-weight: 500;
   margin-top: -0.3rem;
+  font-size: 11px;
+  color: #0278bdad;
+}
+
+.textTweetTo{
+  // margin-top:0.5rem;
+  display: inline-block;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #eceff19f;
+  color: #212121c9;
+  border-radius: 20px;
+}
+
+.tweetToTextContainer{
+text-align: start;
+vertical-align: middle;
+line-height: 48px;
+}
+
+.tweetFromTextContainer{
+text-align: start;
+vertical-align: middle;
+line-height: 48px;
 }
 </style>
-
 <script>
 import axios from 'axios'
 import Twit from 'twit'
+import ProjectsTable from './Tables/ProjectsTable'
 
   export default {
     components: {
+      ProjectsTable
     },
     data() {
       return {
           modal0: false,
           modalerror: false,
-          tweetText: ""
+          tweetText: "",
+          idstr: this.$store.state.userTwitterId
          };
     },
     computed:{
@@ -234,11 +155,11 @@ import Twit from 'twit'
         getDescription(){
             return this.$store.getters.getDescription 
         },
-        getTweetText(){
-            return this.$store.getters.getTweetText 
+        getTweets(){
+            return this.$store.getters.getTweets
         },
         getUserImageURL(){
-            return this.$store.state.userData.user.profile_image_url 
+            return this.$store.state.userData.profile_image_url 
         }
     },
     methods: {
@@ -263,7 +184,12 @@ import Twit from 'twit'
                 .catch(function (error) {
                     console.log(error)
                 });
-      }  
+      },
+      getLocalTime(datetime){
+            var myDate = new Date(datetime)
+            var inStr = myDate.toString().split(" ")
+            return myDate.toLocaleTimeString()+" "+ inStr[0]+" "+inStr[2]+" "+inStr[1]+" "+inStr[3]
+        }  
     },
     mounted() {
     }

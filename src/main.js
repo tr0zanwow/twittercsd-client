@@ -15,8 +15,6 @@ Vue.use(vueCookies)
 Vue.use(ArgonDashboard)
 Vue.use(axios)
 
-vueCookies.config('7d')
-
 const options = { name: '_' }
 Vue.use(VueLodash)
 
