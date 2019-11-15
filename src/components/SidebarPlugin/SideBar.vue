@@ -1,5 +1,5 @@
 <template>
-  <nav
+  <nav 
     class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"
     id="sidenav-main"
   >
@@ -111,7 +111,7 @@
 }
 #sidenav-collapse-main {
   margin-top: 0.5rem;
-  height: 77.2vh;
+  height: 77vh;
   overflow: auto;
 }
 #twitterName {
@@ -149,14 +149,11 @@
 }
 </style>
 <script>
-import NavbarToggleButton from "@/components/NavbarToggleButton";
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
-import _ from "vue-lodash";
 
 export default {
   name: "sidebar",
   components: {
-    NavbarToggleButton,
     SyncLoader
   },
   data() {

@@ -1,9 +1,9 @@
 <template>
-  <table class="table tablesorter" :class="tableClass">
-    <tbody :class="tbodyClasses">
+  <table class="table tablesorter borderless" :class="tableClass">
+    <tbody :class="tbodyClasses" >
       <tr v-for="(item, index) in data" :key="index">
         <slot :row="item" :index="index">
-          <td
+          <td style="width:100px"
             v-for="(column, index) in colsWithValue(item)"
             :key="index">
             {{ itemValue(item, column) }}
@@ -13,6 +13,11 @@
     </tbody>
   </table>
 </template>
+<style lang="scss" scoped>
+  .borderless td, .borderless th{
+      border: none;
+  }
+</style>
 <script>
 export default {
   name: 'base-table',
@@ -63,4 +68,3 @@ export default {
   }
 };
 </script>
-<style></style>
