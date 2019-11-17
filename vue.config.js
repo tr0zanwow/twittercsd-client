@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const isProd = process.env.NODE_ENV === "production";
 
 module.exports = {
+  transpileDependencies: ['vuex-persist'],
   runtimeCompiler: true,
   configureWebpack: {
     plugins: [

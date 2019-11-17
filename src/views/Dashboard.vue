@@ -1,6 +1,5 @@
 <template>
   <div >
-
     <base-header type="gradient-info" class="pb-6 pt-1 pt-md-9">
       <div id="topContainer" class="row mt--7 mb-2">
         <div class="col-xl-3 col-lg-6">
@@ -56,7 +55,7 @@
       <div class="row align-items-center">
         <div class="col">
           <h3 v-if="getDescription != ''" class="mb-0" id="descriptionWrap">
-            <small class="h5">Description</small><br><span class="h4">{{getDescription}}</span>
+            <small class="h5 text-muted">Description</small><br><span class="h4">{{getDescription}}</span>
           </h3>
           <h3 v-else class="mb-0">
             <small class="h5">Description</small><br>Not Available
@@ -70,7 +69,7 @@
       <hr class="my-1">
 
     <div id="tweetContainer" >
-      <div v-for="tweet in getTweets" :key="tweet.id_str" id="tweetTo" class="row container align-items-center mt-4 mb-4">
+      <div v-for="tweet in getTweets.slice(0).reverse()" :key="tweet.id_str" id="tweetTo" class="row container align-items-center mt-4 mb-4">
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
               <img v-bind:src="getUserImageURL" />
@@ -83,9 +82,9 @@
         </div>
 
         <div class="col-sm-2 text-right mt--4">
-        <base-dropdown class="dropdown"
+            <base-dropdown class="dropdown"
                            position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a slot="title" class="btn btn-sm btn-icon-only text-black" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i>
               </a>
 
@@ -109,13 +108,13 @@
                             <span class="btn-inner--icon"><i class="fa fa-paper-plane"></i></span>
                         </button>
                     </div>
-                </div>
-      </div>
-  </div>
+                  </div>
+            </div>
+        </div>
         </div>
       </div>
     </div>
-<modal :show.sync="modal0" gradient="info" modal-classes="modal-danger modal-dialog-centered">
+  <modal :show.sync="modal0" gradient="info" modal-classes="modal-danger modal-dialog-centered">
         <h5 slot="header" class="modal-title" id="modal-title-notification">Your attention is required</h5>
         
         <div class="py-3 text-center">
@@ -140,7 +139,7 @@
             <template slot="footer">
                 <base-button @click="modalerror = false" type="white">Ok</base-button>
             </template>
-        </modal>
+    </modal>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -224,9 +223,7 @@ padding: 1em;
   color: #0278bdad;
 }
 
-.textTweetTo{
-  // margin-top:0.5rem;
-  
+.textTweetTo{  
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 10px;
@@ -259,6 +256,7 @@ import Twit from 'twit'
           modalerror: false,
           tweetText: "",
           idstr: this.$store.state.userTwitterId,
+          selectedTweet: ''
          };
     },
     updated(){
@@ -285,6 +283,7 @@ import Twit from 'twit'
             return this.$store.getters.getDescription 
         },
         getTweets(){
+            this.selectedTweet = this.$store.getters.getTweets.slice(0).reverse()[this.$store.getters.getTweets.length -1].id_str;
             return this.$store.getters.getTweets
         },
         getUserImageURL(){
@@ -306,15 +305,19 @@ import Twit from 'twit'
       },
       sendTweet(){
         axios.post('https://twittercsdnew.herokuapp.com/sendTweet', {
-                    id: '1107667818944708609',
-                    statusText: 'Twitter API Bot',
-                    access_token: '562116157-qmGraijDrsVRI4yiam7S120oAGnDCIfuaDWPnmY1',
-                    access_token_secret: 'MFrdnzx506Bk1N3oz0F8J1ZcRBBBqBMwZoW9VfjGKQMbH',
+                    id: this.selectedTweet,
+                    statusText: '@'+this.$store.getters.getScreenName+' '+this.tweetText,
+                    access_token: this.$store.state.access_token,
+                    access_token_secret: this.$store.state.access_secret,
                 })
                 .then(function (response) {
+                  console.log(response)
                 })
                 .catch(function (error) {
+                  console.log(error)
                 });
+        this.modal0 = false
+        this.tweetText = ''
       },
       getLocalTime(datetime){
             var myDate = new Date(datetime)

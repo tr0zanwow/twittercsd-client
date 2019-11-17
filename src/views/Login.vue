@@ -65,8 +65,11 @@
 }
 </style>
 <script>
+import { SlideYUpTransition } from 'vue2-transitions'
   export default {
-    
+    components: {
+      SlideYUpTransition
+    },
     data() {
       return {
         model: {

@@ -4,7 +4,7 @@
 
       <div class="col">
         <slot>
-          <h5 class="card-title text-uppercase text-muted mb-0" v-if="title">{{title}}</h5>
+          <h5 id="titleText" class="card-title text-uppercase text-muted mb-0" v-if="title">{{title}}</h5>
           <p id="subtitleText" class="h2 font-weight-bold mb-0" v-if="subTitle">{{subTitle}}</p>
           <span id="twitterUserDescription" class="h2 font-weight-bold mb-0" v-if="description">{{description}}</span>
         </slot>
@@ -39,8 +39,11 @@ span{
 #twitterUserDescription{
     font-size: 14px;
 }
+#titleText{
+    font-size: 11px;
+}
 #subtitleText{
-  font-size: 14px;
+  font-size: 18px;
   white-space: nowrap; 
   width: 10em; 
   overflow: hidden;

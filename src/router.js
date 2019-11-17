@@ -10,7 +10,6 @@ export default new Router({
       path: '/',
       redirect: 'dashboard',
       component: DashboardLayout,
-      props: true,
       beforeEnter: (to, from, next) => {
         if(to.params.isAuthenticated){
           next()

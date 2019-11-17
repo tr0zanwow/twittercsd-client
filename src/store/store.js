@@ -2,9 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
 import router from '../router'
+import VuexPersist from 'vuex-persist'
 
 Vue.use(Vuex)
 
+const vuexPersist = new VuexPersist({
+    key: "vuex",
+    storage: window.localStorage
+  })
 
 export const store = new Vuex.Store({
     state:{
@@ -96,5 +101,6 @@ actions: {
             commit("authenticated",false)
             router.push('login')
       }
-    }
+    },
+    plugins: [vuexPersist.plugin]
 });

@@ -7,7 +7,7 @@
       <strong id="brandTitle">Twitter CSD</strong><br />
       <p id="brandSubtitle"><small>Customer Support Desk</small></p>
     </router-link>
-      <h6 id="recentLabel">Recent Tweets</h6>
+      <span id="recentLabelRefreshContainer"><span id="recentLabel h4">Recent Tweets</span></span>
       <hr class="my-3">
     <div class="navbar-collapse" id="sidenav-collapse-main">
       <ApolloQuery
@@ -15,10 +15,10 @@
         :variables="{ idstr }"
       >
         <template v-slot="{ result: { loading, error, data }, isLoading }">
-          <!-- '@'+data.twitter.user.screen_name} -->
+          
           <ApolloQuery
             :query="require('../../graphql/ListTweets.gql')"
-            :variables="{ screenname: '@cnn', tweetSize }"
+            :variables="{ screenname: '@'+data.twitter.user.screen_name, tweetSize }"
           >
             <template
               v-slot="{ result: { loading, error, data }, isLoading }"
@@ -63,7 +63,7 @@
   </nav>
 </template>
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css?family=Montserrat|Rubik:400,500&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400|Rubik:400,500&display=swap");
 
 ::-webkit-scrollbar {
     display: block;
@@ -99,10 +99,15 @@
   margin-top:-1.6rem;
 }
 
+#recentLabelRefreshContainer{
+  margin-left: -0.9rem;
+
+}
+
 #recentLabel {
   margin-top: -1rem;
-  margin-left: -1rem;
   font-size: 15px;
+  font-family: "Montserrat", sans-serif;
 }
 
 #brandSubtitle {
@@ -164,8 +169,7 @@ export default {
       margin: "2px",
       radius: "2px",
       tweetSize: 100,
-      // idstr: this.$store.state.userTwitterId
-      idstr: "759251"
+      idstr: this.$store.state.userTwitterId
     };
   },
   props: {

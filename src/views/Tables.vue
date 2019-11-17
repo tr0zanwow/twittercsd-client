@@ -3,7 +3,7 @@
         <base-header type="gradient-info" class="pb-6 pb-8 pt-5 pt-md-8">
 
         </base-header>
-        <ApolloQuery :query="require('../graphql/getUserInfo_cached.gql')" :variables="{idstr}">
+        <ApolloQuery :query="require('../graphql/getUserInfo.gql')" :variables="{idstr}">
                     <template v-slot="{result:{loading,error,data}, isLoading}" >
         <div class="container-fluid mt--9">
             <div class="row justify-content-center">
@@ -68,7 +68,7 @@
     },
      data(){
       return{
-          idstr: "759251"
+          idstr: this.$store.state.userTwitterId
       }},
     computed:{
         getUserFullImage(){
