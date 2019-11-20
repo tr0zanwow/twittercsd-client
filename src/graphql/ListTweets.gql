@@ -3,6 +3,7 @@ query fetchTweets($query: String!,$tweetSize: Int!) @client{
       search(q: $query result_type:recent,count:$tweetSize){
         id_str
         created_at
+        in_reply_to_status_id_str
         text
         user{
           id_str

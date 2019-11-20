@@ -20,7 +20,7 @@
                         <div class=" dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <a href="/#/profile" class="dropdown-item">
+                        <a @click="setUserID" href="/#/profile" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
                         </a>
@@ -54,6 +54,9 @@
       }
     },
     methods: {
+      setUserID(){
+        this.$store.commit("setProfileTwitterId",this.$store.state.userTwitterId)
+      },
       toggleSidebar() {
         this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
       },

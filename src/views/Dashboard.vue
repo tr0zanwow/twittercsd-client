@@ -16,7 +16,7 @@
           <stats-card
             title="Screen Name"
             type="gradient-orange"
-            :sub-title="getScreenName"
+            :sub-title="'@'+getScreenName"
             icon="fa fa-at"
             class="mb-4 mb-xl-0"
           >
@@ -62,13 +62,14 @@
           </h3>
         </div>
         <div class="col-sm-2 text-right">
-          <base-button @click="scrollToBottom" type="primary" size="sm">See Profile</base-button>
+          <base-button @click="seeProfile" type="primary" size="sm">See Profile</base-button>
         </div>
       </div>
     </div>
       <hr class="my-1">
 
-    <div id="tweetContainer" >
+    <div id="tweetContainer">
+
       <ApolloQuery
         :query="require('../graphql/getUserInfo.gql')"
         :variables="{ idstr }"
@@ -80,7 +81,6 @@
         :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
       >
         <template v-slot="{ result: { loading, error, data }, isLoading }">
-
         <div id="progressloader" v-if="isLoading && loading">
                 <sync-loader
                   :loading="isLoading ? true : false"
@@ -89,69 +89,45 @@
                 ></sync-loader>
               </div>
 
-      <div v-else v-for="(tweet,itemIndex) in getTweets.slice(0).reverse()" :key="tweet.id_str" id="tweetTo" class="row container align-items-center mt-4 mb-4">
+      <div v-else v-for="(tweet,itemIndex) in getTweets.slice(0).reverse()" :key="tweet.id_str">
+      <div class="row align-items-center mt-4 mb-4 ml-2">
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
               <img v-bind:src="getUserImageURL" />
             </span>
         </div>
 
-        <div class="col-sm-9 ml--4">
-          <h4 :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText">{{tweet.text}}</h4><br>
+        <div class="col-sm-11 text-left float-left ml--4">
+          <span :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText h4">{{tweet.text}}</span><span @click="setCurentTweetToReply(tweet.id_str),setActiveItemId(itemIndex)" class="ml-3 clickableReplyIco"><i class="fa fa-reply text-default"></i></span><br>
           <span class="" id="tweetTime">{{getLocalTime(tweet.created_at)}}</span>
         </div>
 
-        <div class="col-sm-2 text-right mt--4">
-            <base-dropdown class="dropdown"
-                           position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-black" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-              </a>
-
-              <template>
-                <a @click="setCurentTweetToReply(tweet.id_str),setActiveItemId(itemIndex)" class="dropdown-item" href="#">Reply</a>
-                <a class="dropdown-item" href="#">Retweet</a>
-              </template>
-            </base-dropdown>
-        </div>
+      </div>
+      <div id="tweetReplies" v-for="repliedTweets in data.twitter.search.slice(0).reverse()" :key="repliedTweets.id_str">
+          <div v-if="repliedTweets.in_reply_to_status_id_str == tweet.id_str">
+          <div class="row align-items-center mt-4 mb-4">
         
-        <div v-for="item in items" :key="item.id">
-          
-          <div v-if="condition">
-
-        <div class="col-sm-2 text-right mt--4">
-            <base-dropdown class="dropdown"
-                           position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-black" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i>
-              </a>
-
-              <template>
-                <a class="dropdown-item" href="#">Delete</a>
-              </template>
-            </base-dropdown>
-        </div>
-
-        <div class="col-sm-9 ml--4">
-          <h4 :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText">{{tweet.text}}</h4><br>
-          <span class="" id="tweetTime">{{getLocalTime(tweet.created_at)}}</span>
+        <div class="col-sm-11 text-right">
+          <h4 class="replietTweetText">{{repliedTweets.text}}</h4><br>
+          <span class="" id="tweetTime">{{getLocalTime(repliedTweets.created_at)}}</span>
         </div>
 
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
-              <img v-bind:src="getUserImageURL" />
+              <img v-bind:src="repliedTweets.user.profile_image_url" />
             </span>
         </div>
 
           </div>
 
         </div>
-
+        </div>
       </div>
         </template>
       </ApolloQuery>
         </template>
       </ApolloQuery>
+
     </div>
       <div class="card-footer text-muted">
        <div class="row">
@@ -172,12 +148,25 @@
   <modal :show.sync="modal0" gradient="info" modal-classes="modal-danger modal-dialog-centered">
         <h5 slot="header" class="modal-title" id="modal-title-notification">Your attention is required</h5>
         
+      <div v-if="progressState" class="text-center">
+        
+        <div id="progressloader2">
+                <sync-loader
+                  :loading="progressState"
+                  color="#fff"
+                  size="25px"
+                ></sync-loader>
+              </div>
+
+      </div>
+        <div v-else>
         <div class="py-3 text-center">
                 <i class="fa fa-paper-plane fa-4x"></i>
                 <h4 class="heading mt-4">Confirmation</h4>
                 <p>Send: <br><strong>"{{tweetText}}"</strong><br><br>To: <br> <strong>@{{getScreenName}}</strong><br></p>
             </div>
-        <template slot="footer">
+        </div>
+        <template v-if="!progressState" slot="footer">
                 <base-button @click="sendTweet" type="default">Send</base-button>
                 <base-button type="secondary" class="ml-auto" @click="modal0 = false">Close</base-button>
             </template>
@@ -205,8 +194,10 @@
   font-family: "Montserrat", sans-serif;
 }
 #tweetContainer{
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 50vh;
+  width: 100%;
   max-height: 50vh;
 }
 #tweetContainer::-webkit-scrollbar {
@@ -215,6 +206,9 @@
 }
 #tweetComposeTextArea{
   resize: none;
+}
+.clickableReplyIco{
+  cursor: pointer;
 }
 #descriptionWrap{
   white-space: nowrap; 
@@ -239,6 +233,14 @@
   top: 55%;
   left: 50%;
   transform: translate(-55%, -50%);
+}
+
+#progressloader2{
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-45%, -50%);
 }
 
 #tweetTime{
@@ -271,6 +273,30 @@ padding: 1em;
 	border-left: 0;
 	margin-top: -20px;
 	margin-left: -20px;
+}
+
+.replietTweetText{
+  font-family: "Montserrat", sans-serif;
+  background-color: #eceff1c0;
+  color: #212121c9;
+  position: relative;
+  border-radius: .5em;
+  display: inline-block;
+  padding: 1em;
+}
+
+.replietTweetText:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-left-color: #eceff1c0;
+	border-right: 0;
+	margin-top: -20px;
+	margin-right: -20px;
 }
 
 .tweetTextActive{
@@ -337,7 +363,6 @@ line-height: 48px;
 <script>
 import axios from 'axios'
 import Twit from 'twit'
-import apollo from 'vue-apollo'
 import ListTweets from '../graphql/ListTweets.gql'
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
 
@@ -356,12 +381,11 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           size: "25px",
           margin: "2px",
           radius: "2px",
+          progressState: false,
           idstr: this.$store.state.userTwitterId,
-          selectedTweet: ''
+          selectedTweet: '',
+          tweetSize: 50
          };
-    },
-    updated(){
-      this.scrollToBottom()
     },
     computed:{
         getUserName(){
@@ -392,6 +416,8 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
             return this.$store.state.userData.profile_image_url 
         }
     },
+    updated(){
+    },
     methods: {
       validate(){
           if(this.tweetText==""){
@@ -400,6 +426,10 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           else{
             this.modal0 = true
           }
+      },
+      seeProfile(){
+        this.$store.commit("setProfileTwitterId",this.$store.getters.getUserID)
+        this.$router.push('profile')
       },
       setActiveItemId(itemIndex) {
       this.activeItemId = itemIndex;
@@ -412,6 +442,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
         container.scrollTop = container.scrollHeight;
       },
       sendTweet(){
+        this.progressState = true;
         axios.post('https://twittercsdnew.herokuapp.com/sendTweet', {
                     id: this.selectedTweet,
                     statusText: '@'+this.$store.getters.getScreenName+' '+this.tweetText,
@@ -420,8 +451,10 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
                 })
                 .then(response =>{
                   console.log("Success")
+                  this.progressState = false;
                   this.modal0 = false;
                   this.tweetText = '';
+                  setTimeout(() => this.tweetSize++, 2000);
                 })
                 .catch(error => {
                   console.log("error")

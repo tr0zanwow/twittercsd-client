@@ -28,7 +28,7 @@ export default new Router({
         {
           path: '/profile',
           name: 'profile',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Tables.vue')
+          component: () => import(/* webpackChunkName: "demo" */ './views/UserProfile.vue')
         }
       ]
       
