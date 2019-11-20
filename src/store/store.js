@@ -89,7 +89,7 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            router.push({name: 'profile',params: {isAuthenticated: true}})
+            router.push('profile')
         })
         .catch(function(error) {
             console.log(error);
@@ -98,6 +98,17 @@ actions: {
         )
       },
       logout({commit}){
+        const userData = {
+            userName : '',
+            userImgUrl : '',
+            userTwitterId : ''
+        }
+        const credentials = {
+            access_token :  '',
+            access_secret : ''
+        }
+            commit("setLoggedInUser",userData)
+            commit("setCredentials",credentials)
             commit("authenticated",false)
             router.push('login')
       }

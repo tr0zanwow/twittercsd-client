@@ -18,7 +18,7 @@
           
           <ApolloQuery
             :query="require('../../graphql/ListTweets.gql')"
-            :variables="{ screenname: '@'+data.twitter.user.screen_name, tweetSize }"
+            :variables="{ query: '@'+data.twitter.user.screen_name, tweetSize }"
           >
             <template
               v-slot="{ result: { loading, error, data }, isLoading }"

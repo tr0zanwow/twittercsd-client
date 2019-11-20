@@ -16,12 +16,11 @@
             <div class="separator separator-bottom separator-skew zindex-100">
                 <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
                      xmlns="http://www.w3.org/2000/svg">
-                    <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+                    <polygon class="fill-default" points="2860 0 2560 100 0 100"></polygon>
                 </svg>
             </div>
         </div>
         <div id="pageContainer" class="container mt--9 pb-9">
-            <slide-y-up-transition mode="out-in" origin="center top">
                 <div class="row justify-content-center">
             <div class="col-lg-6 col-md-7">
                 <div class="card bg-secondary shadow border-0">
@@ -44,7 +43,6 @@
                 </div>
             </div>
         </div>
-            </slide-y-up-transition>
         </div>
         
     </div>
@@ -65,10 +63,8 @@
 }
 </style>
 <script>
-import { SlideYUpTransition } from 'vue2-transitions'
   export default {
     components: {
-      SlideYUpTransition
     },
     data() {
       return {

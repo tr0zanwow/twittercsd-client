@@ -9,11 +9,13 @@ import { createProvider } from './vue-apollo'
 import vueCookies from 'vue-cookies'
 import axios from 'axios'
 import VueLodash from 'vue-lodash'
+import VueApollo from 'vue-apollo'
 
 Vue.config.productionTip = false
 Vue.use(vueCookies)
 Vue.use(ArgonDashboard)
 Vue.use(axios)
+Vue.use(VueApollo)
 
 const options = { name: '_' }
 Vue.use(VueLodash)

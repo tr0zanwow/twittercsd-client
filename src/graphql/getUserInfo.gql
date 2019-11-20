@@ -1,4 +1,4 @@
-query twitter($idstr: UserIdentity!){
+query twitter($idstr: UserIdentity!) @client{
     twitter{
       user (identifier: id, identity: $idstr) {
         created_at

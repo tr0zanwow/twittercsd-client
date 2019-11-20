@@ -55,7 +55,7 @@
       <div class="row align-items-center">
         <div class="col">
           <h3 v-if="getDescription != ''" class="mb-0" id="descriptionWrap">
-            <small class="h5 text-muted">Description</small><br><span class="h4">{{getDescription}}</span>
+            <small class="h5 text-muted">Description</small><br><span class="h4 descriptionStyle">{{getDescription}}</span>
           </h3>
           <h3 v-else class="mb-0">
             <small class="h5">Description</small><br>Not Available
@@ -69,7 +69,27 @@
       <hr class="my-1">
 
     <div id="tweetContainer" >
-      <div v-for="tweet in getTweets.slice(0).reverse()" :key="tweet.id_str" id="tweetTo" class="row container align-items-center mt-4 mb-4">
+      <ApolloQuery
+        :query="require('../graphql/getUserInfo.gql')"
+        :variables="{ idstr }"
+      >
+        <template v-slot="{ result: { loading, error, data }, isLoading }">
+          
+      <ApolloQuery
+        :query="require('../graphql/ListTweets.gql')"
+        :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
+      >
+        <template v-slot="{ result: { loading, error, data }, isLoading }">
+
+        <div id="progressloader" v-if="isLoading && loading">
+                <sync-loader
+                  :loading="isLoading ? true : false"
+                  :color="color"
+                  :size="size"
+                ></sync-loader>
+              </div>
+
+      <div v-else v-for="(tweet,itemIndex) in getTweets.slice(0).reverse()" :key="tweet.id_str" id="tweetTo" class="row container align-items-center mt-4 mb-4">
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
               <img v-bind:src="getUserImageURL" />
@@ -77,7 +97,7 @@
         </div>
 
         <div class="col-sm-9 ml--4">
-          <h4 class="tweetText">{{tweet.text}}</h4><br>
+          <h4 :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText">{{tweet.text}}</h4><br>
           <span class="" id="tweetTime">{{getLocalTime(tweet.created_at)}}</span>
         </div>
 
@@ -89,14 +109,49 @@
               </a>
 
               <template>
-                <a class="dropdown-item" href="#">Reply</a>
+                <a @click="setCurentTweetToReply(tweet.id_str),setActiveItemId(itemIndex)" class="dropdown-item" href="#">Reply</a>
                 <a class="dropdown-item" href="#">Retweet</a>
               </template>
             </base-dropdown>
         </div>
+        
+        <div v-for="item in items" :key="item.id">
+          
+          <div v-if="condition">
+
+        <div class="col-sm-2 text-right mt--4">
+            <base-dropdown class="dropdown"
+                           position="right">
+              <a slot="title" class="btn btn-sm btn-icon-only text-black" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+              </a>
+
+              <template>
+                <a class="dropdown-item" href="#">Delete</a>
+              </template>
+            </base-dropdown>
+        </div>
+
+        <div class="col-sm-9 ml--4">
+          <h4 :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText">{{tweet.text}}</h4><br>
+          <span class="" id="tweetTime">{{getLocalTime(tweet.created_at)}}</span>
+        </div>
+
+        <div class="col-sm-1 mt--4">
+            <span class="avatar avatar-l rounded-circle">
+              <img v-bind:src="getUserImageURL" />
+            </span>
+        </div>
+
+          </div>
+
+        </div>
 
       </div>
-
+        </template>
+      </ApolloQuery>
+        </template>
+      </ApolloQuery>
     </div>
       <div class="card-footer text-muted">
        <div class="row">
@@ -178,6 +233,14 @@
     background: #11CCEE; 
 }
 
+#progressloader{
+  margin: 0;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-55%, -50%);
+}
+
 #tweetTime{
   font-family: "Montserrat", sans-serif;
   font-size: 12.8px;
@@ -205,6 +268,31 @@ padding: 1em;
 	height: 0;
 	border: 20px solid transparent;
 	border-right-color: #eceff1c0;
+	border-left: 0;
+	margin-top: -20px;
+	margin-left: -20px;
+}
+
+.tweetTextActive{
+font-family: "Montserrat", sans-serif;
+font-weight: 500;
+background-color: #182848;
+color: rgba(255, 255, 255, 0.884);
+position: relative;
+border-radius: .5em;
+display: inline-block;
+padding: 1em;
+}
+
+.tweetTextActive:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-right-color: #182848;
 	border-left: 0;
 	margin-top: -20px;
 	margin-left: -20px;
@@ -242,19 +330,32 @@ text-align: start;
 vertical-align: middle;
 line-height: 48px;
 }
+.descriptionStyle{
+  font-size: 14px;
+}
 </style>
 <script>
 import axios from 'axios'
 import Twit from 'twit'
+import apollo from 'vue-apollo'
+import ListTweets from '../graphql/ListTweets.gql'
+import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
+
 
   export default {
     components: {
+      SyncLoader
     },
     data() {
       return {
           modal0: false,
+          activeItemId: "1",
           modalerror: false,
           tweetText: "",
+          color: "#1180EF",
+          size: "25px",
+          margin: "2px",
+          radius: "2px",
           idstr: this.$store.state.userTwitterId,
           selectedTweet: ''
          };
@@ -284,6 +385,7 @@ import Twit from 'twit'
         },
         getTweets(){
             this.selectedTweet = this.$store.getters.getTweets.slice(0).reverse()[this.$store.getters.getTweets.length -1].id_str;
+            this.activeItemId = this.$store.getters.getTweets.length-1
             return this.$store.getters.getTweets
         },
         getUserImageURL(){
@@ -299,6 +401,12 @@ import Twit from 'twit'
             this.modal0 = true
           }
       },
+      setActiveItemId(itemIndex) {
+      this.activeItemId = itemIndex;
+    },
+      setCurentTweetToReply(data){
+        this.selectedTweet = data
+      },
       scrollToBottom(){
         var container = this.$el.querySelector("#tweetContainer");
         container.scrollTop = container.scrollHeight;
@@ -310,14 +418,15 @@ import Twit from 'twit'
                     access_token: this.$store.state.access_token,
                     access_token_secret: this.$store.state.access_secret,
                 })
-                .then(function (response) {
-                  console.log(response)
+                .then(response =>{
+                  console.log("Success")
+                  this.modal0 = false;
+                  this.tweetText = '';
                 })
-                .catch(function (error) {
-                  console.log(error)
+                .catch(error => {
+                  console.log("error")
                 });
-        this.modal0 = false
-        this.tweetText = ''
+        
       },
       getLocalTime(datetime){
             var myDate = new Date(datetime)

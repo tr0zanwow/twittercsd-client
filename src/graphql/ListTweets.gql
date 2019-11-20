@@ -1,6 +1,6 @@
-query search($screenname: String!,$tweetSize: Int!){
+query fetchTweets($query: String!,$tweetSize: Int!) @client{
     twitter{
-      search(q: $screenname result_type:recent,count:$tweetSize){
+      search(q: $query result_type:recent,count:$tweetSize){
         id_str
         created_at
         text

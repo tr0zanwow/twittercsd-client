@@ -6,7 +6,6 @@
         <slot>
           <h5 id="titleText" class="card-title text-uppercase text-muted mb-0" v-if="title">{{title}}</h5>
           <p id="subtitleText" class="h2 font-weight-bold mb-0" v-if="subTitle">{{subTitle}}</p>
-          <span id="twitterUserDescription" class="h2 font-weight-bold mb-0" v-if="description">{{description}}</span>
         </slot>
       </div>
 
@@ -30,20 +29,21 @@
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+.card-stats{
+  height: 4.9rem;
+}
 h5{
     font-family: 'Montserrat', sans-serif;
 }
 span{
     font-family: 'Open Sans', sans-serif;
 }
-#twitterUserDescription{
-    font-size: 14px;
-}
+
 #titleText{
     font-size: 11px;
 }
 #subtitleText{
-  font-size: 18px;
+  font-size: 14px;
   white-space: nowrap; 
   width: 10em; 
   overflow: hidden;

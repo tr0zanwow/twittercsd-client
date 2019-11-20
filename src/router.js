@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DashboardLayout from '@/layout/DashboardLayout'
+import { store } from "./store/store.js"
 Vue.use(Router)
 
 export default new Router({
@@ -11,7 +12,7 @@ export default new Router({
       redirect: 'dashboard',
       component: DashboardLayout,
       beforeEnter: (to, from, next) => {
-        if(to.params.isAuthenticated){
+        if(store.state.isAuthenticated){
           next()
         }
         else{
@@ -23,15 +24,6 @@ export default new Router({
           path: '/dashboard',
           name: 'dashboard',
           component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue'),
-          props: true,
-          beforeEnter: (to, from, next) => {
-          if(to.params.isSet){
-            next()
-          }
-          else{
-            next({name: 'profile'})
-          }
-        }
         },
         {
           path: '/profile',
