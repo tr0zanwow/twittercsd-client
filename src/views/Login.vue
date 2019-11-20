@@ -1,26 +1,14 @@
 <template>
-<div id="loginContainer" class="main-content bg-default">
-        <base-nav class="navbar-top navbar-horizontal navbar-dark"
-                  containerClasses="px-4 container"
+    <div id="loginContainer">
+       <base-nav class="navbar-top navbar-horizontal navbar-dark"
+                  containerClasses="px-4"
                   expand>
             <router-link slot="brand" class="navbar-brand" to="/">
                 <strong id="brandTitle">Twitter CSD</strong>
             </router-link>
 
         </base-nav>
-        <div class="header bg-gradient-success py-7 py-lg-8">
-            <div class="container">
-                <div class="header-body text-center mb-7">
-                </div>
-            </div>
-            <div class="separator separator-bottom separator-skew zindex-100">
-                <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <polygon class="fill-default" points="2860 0 2560 100 0 100"></polygon>
-                </svg>
-            </div>
-        </div>
-        <div id="pageContainer" class="container mt--9 pb-9">
+       <div id="pageContainer" class="container">
                 <div class="row justify-content-center">
             <div class="col-lg-6 col-md-7">
                 <div class="card bg-secondary shadow border-0">
@@ -44,7 +32,7 @@
             </div>
         </div>
         </div>
-        
+
     </div>
 </template>
 <style lang="scss">
@@ -52,6 +40,36 @@
 
 ::-webkit-scrollbar{
         display: none;
+}
+#pageContainer{
+    padding-top:16vh;
+    width:80%;
+}
+
+#loginContainer{
+    width: 100%;
+	height: 100vh;
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#brandTitle{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #fff;
 }
 
 #titleHeader{
