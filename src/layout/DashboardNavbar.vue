@@ -24,6 +24,10 @@
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
                         </a>
+                        <a href="/#/about" class="dropdown-item">
+                            <i class="fa fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
                         <div class="dropdown-divider"></div>
                         <a href="/#/" @click="signOut()" class="dropdown-item">
                             <i class="ni ni-user-run"></i>

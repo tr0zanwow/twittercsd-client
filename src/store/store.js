@@ -102,7 +102,7 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            router.push('profile')
+            router.push('about')
         })
         .catch(function(error) {
             console.log(error);

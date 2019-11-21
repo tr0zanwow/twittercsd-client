@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: 'dashboard',
+      redirect: 'about',
       component: DashboardLayout,
       beforeEnter: (to, from, next) => {
         if(store.state.isAuthenticated){
@@ -23,12 +23,17 @@ export default new Router({
         {
           path: '/dashboard',
           name: 'dashboard',
-          component: () => import(/* webpackChunkName: "demo" */ './views/Dashboard.vue'),
+          component: () => import('./views/Dashboard.vue'),
         },
         {
           path: '/profile',
           name: 'profile',
-          component: () => import(/* webpackChunkName: "demo" */ './views/UserProfile.vue')
+          component: () => import('./views/UserProfile.vue')
+        },
+        {
+          path: '/about',
+          name: 'about',
+          component: () => import('./views/About.vue')
         }
       ]
       
