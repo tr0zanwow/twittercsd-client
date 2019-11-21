@@ -19,6 +19,7 @@
           <ApolloQuery
             :query="require('../../graphql/ListTweets.gql')"
             :variables="{ query: '@'+data.twitter.user.screen_name, tweetSize }"
+            :pollInterval="5000"
           >
             <template
               v-slot="{ result: { loading, error, data }, isLoading }"

@@ -79,6 +79,8 @@
       <ApolloQuery
         :query="require('../graphql/ListTweets.gql')"
         :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
+        :pollInterval="5000"
+        :loadingKey= isUpdating
       >
         <template v-slot="{ result: { loading, error, data }, isLoading }">
         <div id="progressloader" v-if="isLoading && loading">
@@ -384,6 +386,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           progressState: false,
           idstr: this.$store.state.userTwitterId,
           selectedTweet: '',
+          isUpdating: 0,
           tweetSize: 50
          };
     },
