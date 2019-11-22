@@ -80,7 +80,6 @@
         :query="require('../graphql/ListTweets.gql')"
         :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
         :pollInterval="5000"
-        :loadingKey= isUpdating
       >
         <template v-slot="{ result: { loading, error, data }, isLoading }">
         <div id="progressloader" v-if="isLoading && loading">
