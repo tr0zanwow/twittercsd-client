@@ -1,21 +1,10 @@
-query twitter($idstr: UserIdentity!) @client{
-    twitter{
-      user (identifier: id, identity: $idstr) {
+query twitter($idstr: String!) @client{
+      user (identifier: user_id, value: $idstr) {
         created_at
         description
         id_str
         screen_name
         name
-        profile_image_url
-        url
-        tweets_count
-        followers_count
-          tweets(limit: 100) {
-            id_str
-            text
-            created_at
-            in_reply_to_status_id_str
-          }
-      }
+        profile_image_url_https
     }
 }

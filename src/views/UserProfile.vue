@@ -95,6 +95,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           color: "#fff",
           size: "25px",
           margin: "2px",
+          twitter: [],
           radius: "2px",
       }},
     computed:{

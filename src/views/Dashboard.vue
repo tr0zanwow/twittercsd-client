@@ -49,9 +49,9 @@
     <div class="row">
         <div class="col-lg-12 align-items-stretch" >
           <div class="card shadow"
-       :class="type === 'dark' ? 'bg-default': ''">
+       >
     <div class="card-header border-0"
-         :class="type === 'dark' ? 'bg-transparent': ''">
+         >
       <div class="row align-items-center">
         <div class="col">
           <h3 v-if="getDescription != ''" class="mb-0" id="descriptionWrap">
@@ -77,9 +77,8 @@
         <template v-slot="{ result: { loading, error, data }, isLoading }">
           
       <ApolloQuery
-        :query="require('../graphql/ListTweets.gql')"
+        :query="require('../graphql/listUsers.gql')"
         :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
-        :pollInterval="5000"
       >
         <template v-slot="{ result: { loading, error, data }, isLoading }">
         <div id="progressloader" v-if="isLoading && loading">
@@ -364,7 +363,6 @@ line-height: 48px;
 <script>
 import axios from 'axios'
 import Twit from 'twit'
-import ListTweets from '../graphql/ListTweets.gql'
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
 
 
@@ -379,6 +377,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           modalerror: false,
           tweetText: "",
           color: "#1180EF",
+          twitter: [],
           size: "25px",
           margin: "2px",
           radius: "2px",

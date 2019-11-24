@@ -10,33 +10,18 @@
       <span id="recentLabelRefreshContainer"><span id="recentLabel h4">Recent Tweets</span></span>
       <hr class="my-3">
     <div class="navbar-collapse" id="sidenav-collapse-main">
-      <ApolloQuery
-        :query="require('../../graphql/getUserInfo.gql')"
-        :variables="{ idstr }"
-      >
-        <template v-slot="{ result: { loading, error, data }, isLoading }">
-          
-          <ApolloQuery
-            :query="require('../../graphql/ListTweets.gql')"
-            :variables="{ query: '@'+data.twitter.user.screen_name, tweetSize }"
-            :pollInterval="5000"
-            
-          >
-            <template
-              v-slot="{ result: { loading, error, data }, isLoading }"
-              :onDone="onDone"
-            >
-              <div id="progressloader" v-if="isLoading && loading">
+     
+              <div id="progressloader" v-if="isLoading">
                 <sync-loader
-                  :loading="isLoading ? true : false"
+                  :loading="isLoading"
                   :color="color"
                   :size="size"
                 ></sync-loader>
               </div>
               <div id="userListContainer" v-else>
                 <ul
-                  v-for="(tweetUsers, itemIndex) in getData(data.twitter.search)"
-                  :key="tweetUsers.id_str"
+                  v-for="(tweetUsers, itemIndex) in sortedData"
+                  :key="itemIndex"
                   class="navbar-nav mb-3"
                 >
                   <li
@@ -44,23 +29,20 @@
                     :class="{ active: activeItemId === itemIndex }"
                     @click="
                       setActiveItemId(itemIndex),
-                        setUserData(getData(data.twitter.search)[itemIndex])"
+                        setUserData(sortedData[itemIndex])"
                   >
                     <a id="listItemHref" class="nav-link">
                       <span class="avatar avatar-sm rounded-circle">
                         <img
-                          v-bind:alt="tweetUsers.name"
-                          v-bind:src="tweetUsers.profile_image_url"
+                          v-bind:alt="tweetUsers.user.name"
+                          v-bind:src="tweetUsers.user.profile_image_url_https"
                         /> </span
-                      ><span id="twitterName">{{ tweetUsers.name }}</span>
+                      ><span id="twitterName">{{ tweetUsers.user.name }}</span>
                     </a>
                   </li>
                 </ul>
               </div>
-            </template>
-          </ApolloQuery>
-        </template>
-      </ApolloQuery>
+            
     </div>
   </nav>
 </template>
@@ -169,77 +151,70 @@ export default {
       color: "#1180EF",
       size: "25px",
       margin: "2px",
+      search: [],
+      user:[],
+      sortedData: [],
       radius: "2px",
       tweetSize: 100,
+      isLoading: false,
       idstr: this.$store.state.userTwitterId
     };
   },
   props: {
-    logo: {
-      type: String,
-      default: "img/brand/green.png",
-      description: "Sidebar app logo"
-    },
-    autoClose: {
-      type: Boolean,
-      default: true,
-      description:
-        "Whether sidebar should autoclose on mobile when clicking an item"
-    }
   },
   provide() {
     return {
       autoClose: this.autoClose
     };
   },
-  methods: {
-    getData(val) {
-      var sortedData = [];
-      var tempData = [];
-      var i = 0;
-      var j = 0;
-      var tempUser;
-      var findDupUserTweets;
-      var findFirstTweet;
-
-      tempData.push(...val);
-      for (i = 0; i < tempData.length; i++) {
-        tempUser = {
-                  id_str: tempData[i].user.id_str,
-                  name: tempData[i].user.name,
-                  screen_name: tempData[i].user.screen_name,
-                  description: tempData[i].user.description,
-                  profile_image_url: tempData[i].user.profile_image_url,
-                  tweets_count: tempData[i].user.tweets_count,
-                  followers_count: tempData[i].user.followers_count,
-                  tweets: []
-                };
-
-            findFirstTweet = {
-                  id_str: tempData[i].id_str,
-                  created_at: tempData[i].created_at,
-                  text: tempData[i].text
-            };
-         sortedData.push(tempUser)
-         sortedData[i].tweets.push(findFirstTweet)   
-        for (j = i + 1; j < tempData.length; j++) {
-          if (tempData[i].user.id_str == tempData[j].user.id_str){
-            findDupUserTweets = {
-                  id_str: tempData[j].id_str,
-                  created_at: tempData[j].created_at,
-                  text: tempData[j].text
-            };
-            sortedData[i].tweets.push(findDupUserTweets)
-            tempData.splice(j,1)
+  apollo:{
+    user:{
+      query: require('../../graphql/getUserInfo.gql'),
+    variables () {
+      return {
+        idstr: this.idstr
       }
-      }
-      }
-
-      return sortedData;
-      
     },
+    deep: false,
+   
+    result ({ data, loading, networkStatus }) {
+  
+    },
+    error (error) {
+    },
+    loadingKey: 'loadingQueriesCount',
+    watchLoading (isLoading, countModifier) {
+    }
+
+    },
+    search: {
+    query: require('../../graphql/listUsers.gql'),
+    variables () {
+      return {
+        queryText: 'to:@'+this.user.screen_name,
+        limit: this.tweetSize
+      }
+    },
+    deep: false,
+   
+    result ({ data, loading, networkStatus }) {
+      this.sortedData = data.search.filter((set => f => !set.has(f.user.id_str) && set.add(f.user.id_str))(new Set));
+    },
+    error (error) {
+
+    },
+    loadingKey: 'loadingQueriesCount',
+    watchLoading (isLoading, countModifier) {
+      this.isLoading = isLoading
+    },
+  },
+  },
+  methods: {
     setActiveItemId(itemIndex) {
       this.activeItemId = itemIndex;
+    },
+    refreshQuery(){
+      
     },
     setUserData(data) {
       this.$store.commit("setUserData", data);

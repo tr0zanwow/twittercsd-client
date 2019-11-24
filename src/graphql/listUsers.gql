@@ -1,0 +1,10 @@
+query fetchTweets($queryText: String!,$limit: Int!) @client{
+      search(query: $queryText,count: $limit){
+        user{
+          id_str
+          name
+          screen_name
+          profile_image_url_https
+        }
+      }
+  }

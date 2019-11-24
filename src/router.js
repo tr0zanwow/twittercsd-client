@@ -24,6 +24,15 @@ export default new Router({
           path: '/dashboard',
           name: 'dashboard',
           component: () => import('./views/Dashboard.vue'),
+          props: true,
+          beforeEnter: (to, from, next) => {
+            if(store.state.isAuthenticated){
+              next()
+            }
+            else{
+              next({name: 'login'})
+            }
+          }
         },
         {
           path: '/profile',
