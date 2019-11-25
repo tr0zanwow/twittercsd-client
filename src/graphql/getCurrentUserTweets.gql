@@ -1,4 +1,4 @@
-query getCurrentUserTweets($identity: String!,$count: Int!,$access_token: String!,$access_secret: String!) @client{
+query getCurrentUserTweets($identity: String!,$count: Int!,$access_token: String!,$access_secret: String!) {
         getTimeline(identifier:user_id, identity:$identity,count:$count,
         access_token: $access_token,
         access_token_secret: $access_secret)

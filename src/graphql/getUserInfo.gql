@@ -1,4 +1,4 @@
-query twitter($idstr: String!) @client{
+query twitter($idstr: String!){
       user (identifier: user_id, value: $idstr) {
         created_at
         description

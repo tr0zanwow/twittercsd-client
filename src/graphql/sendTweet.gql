@@ -1,0 +1,11 @@
+mutation($statusText: String!,$inReplyToID: String!,$access_token: String!,$access_secret: String!) {
+        postTweet(statusText:$statusText, inReplyToID:$inReplyToID,
+        access_token: $access_token,
+        access_token_secret: $access_secret)
+        {
+            created_at
+            id_str
+            text
+            in_reply_to_status_id_str
+        }
+  }

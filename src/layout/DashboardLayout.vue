@@ -30,11 +30,34 @@
         sidebarBackground: 'vue' //vue|blue|orange|green|red|primary
       };
     },
+    mounted(){
+      this.setCreds()
+    },
+    sockets:{
+      connect: function(){
+        const creds = {
+                        userTwitterId: this.$store.state.userTwitterId,
+                        access_token: this.$store.state.access_token,
+                        access_secret: this.$store.state.access_secret,
+                    }
+                    this.$socket.emit('creds', creds)
+      }
+    },
     methods: {
       toggleSidebar() {
         if (this.$sidebar.showSidebar) {
           this.$sidebar.displaySidebar(false);
         }
+      },
+      setCreds(){
+        if(this.$store.state.isAuthenticated){
+                    const creds = {
+                        userTwitterId: this.$store.state.userTwitterId,
+                        access_token: this.$store.state.access_token,
+                        access_secret: this.$store.state.access_secret,
+                    }
+                    this.$socket.emit('creds', creds)
+                }
       }
     }
   };

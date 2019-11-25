@@ -3,9 +3,6 @@ import Vuex from 'vuex'
 import * as firebase from 'firebase'
 import router from '../router'
 import VuexPersist from 'vuex-persist'
-import io from 'socket.io-client';
-
-var socket = io('https://apollo-graphql-socket-node.herokuapp.com');
 
 Vue.use(Vuex)
 
@@ -27,10 +24,11 @@ export const store = new Vuex.Store({
         userTwitterDescription: "",
         access_token: "",
         access_secret: "",
-        currentUserTweets:[],
+        loggedInUsrTweets:[],
         taggedTweets:[],
         loggedInUserData: [],
-        userData:[]
+        userData:[],
+        socketData: ""
     },
     getters:{
         authenticated (state) {
@@ -62,28 +60,14 @@ export const store = new Vuex.Store({
         getTweets(state){
             return state.userData.tweets
         },
-        getCurrentUserTweets(state){
-            return state.currentUserTweets
+        loggedInUsrTweets(state){
+            return state.loggedInUsrTweets
         },
         getTaggedTweets(state){
             return state.taggedTweets
         },
         getProfileTwitterId(state){
             return state.profileTwitterID
-        },
-        socketOnStart(state){
-            if(state.isAuthenticated){
-                socket.on('connect', function(){
-                    if(state.isAuthenticated){
-                    const creds = {
-                        userTwitterId: state.userTwitterId,
-                        access_token: state.access_token,
-                        access_secret: state.access_secret,
-                    }
-                    socket.emit('creds', creds);
-                  }
-                }); 
-        }
         }
         
     },
@@ -103,8 +87,8 @@ export const store = new Vuex.Store({
         authenticated:(state, payload)=> {
             state.isAuthenticated = payload
         },
-        setCurrentUserTweets:(state,payload) =>{
-            state.currentUserTweets = payload
+        setLoggedInUsrTweets:(state,payload) =>{
+            state.loggedInUsrTweets = payload
         },
         setLoggedInUser: (state,payload) =>{
             state.userName = payload.userName,
@@ -138,12 +122,12 @@ actions: {
             commit("setLoggedInUser",userData)
             commit("setCredentials",credentials)
             commit("authenticated",true)
-            const creds = {
-                userTwitterId: result.user.providerData[0].uid,
-                access_token: result.credential.accessToken,
-                access_secret: result.credential.secret,
-            }
-            socket.emit('creds', creds);
+            // const creds = {
+            //     userTwitterId: result.user.providerData[0].uid,
+            //     access_token: result.credential.accessToken,
+            //     access_secret: result.credential.secret,
+            // }
+            // socket.emit('creds', creds);
 
             router.push('about')
         })
@@ -170,8 +154,4 @@ actions: {
       }
     },
     plugins: [vuexPersist.plugin]
-});
-
-socket.on('eventOccured',function(data){
-    console.log(data)
 });

@@ -92,7 +92,7 @@
         </div>
 
       </div>
-      <div id="tweetReplies" v-for="repliedTweets in currentTweets" :key="repliedTweets.id_str">
+      <div id="tweetReplies" v-for="repliedTweets in cUsrTweets" :key="repliedTweets.id_str">
           <div v-if="repliedTweets.in_reply_to_status_id_str == tweet.id_str">
           <div class="row align-items-center mt-4 mb-4">
         
@@ -372,9 +372,9 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           idstr: this.$store.state.userTwitterId,
           selectedTweet: '',
           isUpdating: 0,
-          tweetSize: 70,
-          currentTweets: this.$store.getters.getCurrentUserTweets.slice(0).reverse(),
+          tweetSize: 100,
           currentUserTweets:[],
+          cUsrTweets: this.$store.getters.loggedInUsrTweets.slice(0).reverse(),
           loggedInUserImgUrl: this.$store.state.userImgUrl
          };
     },
@@ -416,9 +416,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
     deep: false,
    
     result ({ data, loading, networkStatus }) {
-      this.$store.commit("setCurrentUserTweets",data.getTimeline)
-      console.log('Current User Tweets')
-      console.log(this.$store.getters.getCurrentUserTweets)
+      this.$store.commit("setLoggedInUsrTweets",data.getTimeline)
     },
     error (error) {
     },
@@ -438,7 +436,6 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
    
     result ({ data, loading, networkStatus }) {
       this.$store.commit("setTaggedTweets",data.search)
-      console.log(this.$store.state.taggedTweets[this.$store.state.taggedTweets.length-1].id_str)
     },
     error (error) {
 
@@ -449,7 +446,20 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
     },
   },
   },
+  sockets:{
+      eventOccured: function(data){
+        console.log(data)
+        this.refetchData()
+        // if(data=="tweet_create" || data=="tweet_delete"){
+        // }
+      }
+    },
     methods: {
+      refetchData(){
+        this.$apollo.queries.currentUserTweets.refetch()
+        this.$apollo.queries.taggedTweets.refetch()
+        this.$forceUpdate();
+      },
       validate(){
           if(this.tweetText=="" && this.selectedTweet!=""){
           this.modalerror = true
@@ -462,7 +472,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           }
       },
       seeProfile(){
-        this.$store.commit("setProfileTwitterId",this.$store.getters.getUserID)
+        this.$store.commit("setProfileTwitterId",this.$store.state.userData.user.id_str)
         this.$router.push('profile')
       },
       setActiveItemId(itemIndex) {
@@ -476,7 +486,28 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
         container.scrollTop = container.scrollHeight;
       },
       sendTweet(){
-
+        console.log(this.selectedTweet)
+        this.progressState = true
+          this.$apollo.mutate({
+          mutation: require('../graphql/sendTweet.gql'),
+          variables: {
+            statusText: '@'+this.$store.getters.getScreenName+' '+this.tweetText,
+            inReplyToID: this.selectedTweet,
+            access_token: this.$store.state.access_token,
+            access_secret: this.$store.state.access_secret
+          },
+          update: (store, { data: { addTag } }) => {
+            this.refetchData()
+          },
+        }).then((data) => {
+          this.progressState = false
+          this.modal0 = false
+          this.refetchData()
+           
+        }).catch((error) => {
+          console.error(error)
+          
+        })
       },
       getLocalTime(datetime){
             var myDate = new Date(datetime)

@@ -1,4 +1,4 @@
-query fetchTweets($queryText: String!,$limit: Int!) @client{
+query fetchTweets($queryText: String!,$limit: Int!){
       search(query: $queryText,count: $limit){
         user{
           id_str

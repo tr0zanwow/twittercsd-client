@@ -9,6 +9,7 @@ import { createProvider } from './vue-apollo'
 import vueCookies from 'vue-cookies'
 import axios from 'axios'
 import VueApollo from 'vue-apollo'
+import VueSocketIO from 'vue-socket.io'
 
 Vue.config.productionTip = false
 Vue.use(vueCookies)
@@ -16,10 +17,17 @@ Vue.use(ArgonDashboard)
 Vue.use(axios)
 Vue.use(VueApollo)
 
-store.getters.socketOnStart
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'https://apollo-graphql-socket-node.herokuapp.com',
+  vuex: {
+      store,
+      actionPrefix: 'SOCKET_',
+      mutationPrefix: 'SOCKET_'
+  }
+}))
 
 new Vue({
-  render: h => h(App),
   router,
   store,
   vueCookies,
@@ -35,4 +43,5 @@ new Vue({
       appId: "1:585435997482:web:89ac0da23f96313e406a53"
     })
   },
+  render: h => h(App),
 }).$mount('#app')

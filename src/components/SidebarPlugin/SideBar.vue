@@ -139,11 +139,13 @@
 </style>
 <script>
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
+import { sockets } from 'vue-socket.io'
 
 export default {
   name: "sidebar",
   components: {
-    SyncLoader
+    SyncLoader,
+    sockets
   },
   data() {
     return {
@@ -159,6 +161,14 @@ export default {
       isLoading: false,
       idstr: this.$store.state.userTwitterId
     };
+  },
+  sockets:{
+    connect: function () {
+      console.log('socket connected')
+    },
+    eventOccured: function (data) {
+      console.log(data)
+    }
   },
   props: {
   },
@@ -209,6 +219,12 @@ export default {
     },
   },
   },
+  sockets:{
+      eventOccured: function(data){
+        this.$apollo.queries.search.refetch()
+        this.$forceUpdate();
+      }
+    },
   methods: {
     setActiveItemId(itemIndex) {
       this.activeItemId = itemIndex;

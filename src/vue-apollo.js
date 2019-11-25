@@ -14,11 +14,6 @@ const cache = new InMemoryCache();
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://apollo-graphql-socket-node.herokuapp.com/graphql'
 // Files URL root
 export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf('/graphql'))
-export const resolvers = {
-  Mutation: {
-      
-  }
-};
 Vue.prototype.$filesRoot = filesRoot
 
 // Config
@@ -43,16 +38,16 @@ const defaultOptions = {
   // link: myLink
 
   // Override default cache
-  cache: cache,
+  // cache: cache,
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
 
   // Additional ApolloClient options
-  apollo: { cache },
+  // apollo: { cache },
 
   // Client local data (see apollo-link-state)
-  clientState: { resolvers }
+  // clientState: { resolvers }
 }
 
 // Call this in the Vue app file
@@ -69,7 +64,7 @@ export function createProvider (options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        fetchPolicy: 'cache-and-network',
+        fetchPolicy: 'no-cache',
       },
     },
     errorHandler (error) {

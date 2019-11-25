@@ -26,11 +26,11 @@ export default new Router({
           component: () => import('./views/Dashboard.vue'),
           props: true,
           beforeEnter: (to, from, next) => {
-            if(store.state.isAuthenticated){
+            if(to.params.isSet){
               next()
             }
             else{
-              next({name: 'login'})
+              next({name: 'about'})
             }
           }
         },

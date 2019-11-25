@@ -22,7 +22,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-3 order-lg-2">
                                 <div class="card-profile-image">  
-                                    <img :src="getFullImage(data.twitter.user.profile_image_url)" class="rounded-circle">
+                                    <img :src="getFullImage(data.user.profile_image_url_https)" class="rounded-circle">
                                 </div>
                             </div>
                         </div>
@@ -36,11 +36,11 @@
                                 <div class="col">
                                     <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                         <div>
-                                            <span class="heading">{{data.twitter.user.tweets_count}}</span>
+                                            <span class="heading">{{data.user.tweets_count}}</span>
                                             <span class="description">Tweet Counts</span>
                                         </div>
                                         <div>
-                                            <span class="heading">{{data.twitter.user.followers_count}}</span>
+                                            <span class="heading">{{data.user.followers_count}}</span>
                                             <span class="description">Follower Counts</span>
                                         </div>
                                     </div>
@@ -49,16 +49,16 @@
                             <div class="text-center">
                                 <h3>{{data.twitter.user.name}}</h3>
                                 <div class="h5 font-weight-300">
-                                    <i class="fa fa-at"></i> {{data.twitter.user.screen_name}}
+                                    <i class="fa fa-at"></i> {{data.user.screen_name}}
                                 </div>
                                 <div class="h5 mt-4">
                                     <i class="ni business_briefcase-24 mr-2"></i>Account Created
                                 </div>
                                 <div class="h5 font-weight-300">
-                                    <i class="ni education_hat mr-2"></i>{{getCreatedAt(data.twitter.user.created_at)}}
+                                    <i class="ni education_hat mr-2"></i>{{getCreatedAt(data.user.created_at)}}
                                 </div>
                                 <hr class="my-4" />
-                                <p>{{data.twitter.user.description}}</p>
+                                <p>{{data.user.description}}</p>
                             </div>
                         </div>
                     </div>
@@ -98,14 +98,6 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           twitter: [],
           radius: "2px",
       }},
-    computed:{
-        getUserFullImage(){
-           return this.$store.getters.getUserImage
-        },
-        getUsername(){
-           return this.$store.state.userName
-        }
-    },
     methods:{
         getCreatedAt(data){
             var temp = [];

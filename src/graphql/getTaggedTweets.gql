@@ -1,4 +1,4 @@
-query getTaggedTweets($queryText: String!,$limit: Int!) @client{
+query getTaggedTweets($queryText: String!,$limit: Int!) {
       search(query: $queryText,count: $limit){
         created_at
         id_str
