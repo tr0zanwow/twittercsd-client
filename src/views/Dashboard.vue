@@ -449,9 +449,9 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
   sockets:{
       eventOccured: function(data){
         console.log(data)
+        if(data=="tweet_create" || data=="tweet_delete"){
         this.refetchData()
-        // if(data=="tweet_create" || data=="tweet_delete"){
-        // }
+        }
       }
     },
     methods: {
