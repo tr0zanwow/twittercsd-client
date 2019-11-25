@@ -5,6 +5,8 @@ query fetchTweets($queryText: String!,$limit: Int!) @client{
           name
           screen_name
           profile_image_url_https
+          followers_count
+          statuses_count
         }
       }
   }

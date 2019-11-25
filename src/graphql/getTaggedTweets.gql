@@ -1,0 +1,8 @@
+query getTaggedTweets($queryText: String!,$limit: Int!) @client{
+      search(query: $queryText,count: $limit){
+        created_at
+        id_str
+        full_text
+        in_reply_to_status_id_str
+      }
+  }

@@ -178,7 +178,7 @@ export default {
     deep: false,
    
     result ({ data, loading, networkStatus }) {
-  
+        this.$store.commit("setLoggedInUserData",data.user)
     },
     error (error) {
     },

@@ -29,7 +29,7 @@
                             <span>About</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="/#/" @click="signOut()" class="dropdown-item">
+                        <a href="/#/login" @click="signOut()" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
                         </a>

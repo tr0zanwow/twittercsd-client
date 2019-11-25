@@ -70,26 +70,15 @@
 
     <div id="tweetContainer">
 
-      <ApolloQuery
-        :query="require('../graphql/getUserInfo.gql')"
-        :variables="{ idstr }"
-      >
-        <template v-slot="{ result: { loading, error, data }, isLoading }">
-          
-      <ApolloQuery
-        :query="require('../graphql/listUsers.gql')"
-        :variables="{ query: 'to:@'+getScreenName+' from:@'+data.twitter.user.screen_name, tweetSize }"
-      >
-        <template v-slot="{ result: { loading, error, data }, isLoading }">
-        <div id="progressloader" v-if="isLoading && loading">
+        <div id="progressloader" v-if="taggedTweetLoading">
                 <sync-loader
-                  :loading="isLoading ? true : false"
+                  :loading="taggedTweetLoading"
                   :color="color"
                   :size="size"
                 ></sync-loader>
               </div>
 
-      <div v-else v-for="(tweet,itemIndex) in getTweets.slice(0).reverse()" :key="tweet.id_str">
+      <div v-else v-for="(tweet,itemIndex) in this.$store.getters.getTaggedTweets.slice(0).reverse()" :key="itemIndex">
       <div class="row align-items-center mt-4 mb-4 ml-2">
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
@@ -98,23 +87,23 @@
         </div>
 
         <div class="col-sm-11 text-left float-left ml--4">
-          <span :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText h4">{{tweet.text}}</span><span @click="setCurentTweetToReply(tweet.id_str),setActiveItemId(itemIndex)" class="ml-3 clickableReplyIco"><i class="fa fa-reply text-default"></i></span><br>
+          <span :class="{ tweetTextActive: activeItemId === itemIndex }" class="tweetText h4 maxWidth">{{tweet.full_text}}</span><span @click="setCurentTweetToReply(tweet.id_str),setActiveItemId(itemIndex)" class="ml-3 clickableReplyIco"><i class="fa fa-reply text-default"></i></span><br>
           <span class="" id="tweetTime">{{getLocalTime(tweet.created_at)}}</span>
         </div>
 
       </div>
-      <div id="tweetReplies" v-for="repliedTweets in data.twitter.search.slice(0).reverse()" :key="repliedTweets.id_str">
+      <div id="tweetReplies" v-for="repliedTweets in currentTweets" :key="repliedTweets.id_str">
           <div v-if="repliedTweets.in_reply_to_status_id_str == tweet.id_str">
           <div class="row align-items-center mt-4 mb-4">
         
         <div class="col-sm-11 text-right">
-          <h4 class="replietTweetText">{{repliedTweets.text}}</h4><br>
+          <h4 class="replietTweetText maxWidth">{{repliedTweets.full_text}}</h4><br>
           <span class="" id="tweetTime">{{getLocalTime(repliedTweets.created_at)}}</span>
         </div>
 
         <div class="col-sm-1 mt--4">
             <span class="avatar avatar-l rounded-circle">
-              <img v-bind:src="repliedTweets.user.profile_image_url" />
+              <img v-bind:src="loggedInUserImgUrl" />
             </span>
         </div>
 
@@ -123,11 +112,6 @@
         </div>
         </div>
       </div>
-        </template>
-      </ApolloQuery>
-        </template>
-      </ApolloQuery>
-
     </div>
       <div class="card-footer text-muted">
        <div class="row">
@@ -192,6 +176,9 @@
 .wrapper{
   overflow: hidden;
   font-family: "Montserrat", sans-serif;
+}
+.maxWidth{
+  max-width:80%
 }
 #tweetContainer{
   overflow-y: auto;
@@ -365,7 +352,6 @@ import axios from 'axios'
 import Twit from 'twit'
 import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
 
-
   export default {
     components: {
       SyncLoader
@@ -375,6 +361,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           modal0: false,
           activeItemId: "1",
           modalerror: false,
+          taggedTweetLoading: false,
           tweetText: "",
           color: "#1180EF",
           twitter: [],
@@ -385,7 +372,10 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
           idstr: this.$store.state.userTwitterId,
           selectedTweet: '',
           isUpdating: 0,
-          tweetSize: 50
+          tweetSize: 70,
+          currentTweets: this.$store.getters.getCurrentUserTweets.slice(0).reverse(),
+          currentUserTweets:[],
+          loggedInUserImgUrl: this.$store.state.userImgUrl
          };
     },
     computed:{
@@ -408,21 +398,64 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
         getDescription(){
             return this.$store.getters.getDescription 
         },
-        getTweets(){
-            this.selectedTweet = this.$store.getters.getTweets.slice(0).reverse()[this.$store.getters.getTweets.length -1].id_str;
-            this.activeItemId = this.$store.getters.getTweets.length-1
-            return this.$store.getters.getTweets
-        },
         getUserImageURL(){
-            return this.$store.state.userData.profile_image_url 
+            return this.$store.state.userData.user.profile_image_url_https 
         }
     },
-    updated(){
+    apollo:{
+    currentUserTweets:{
+      query: require('../graphql/getCurrentUserTweets.gql'),
+    variables () {
+      return {
+        identity: this.$store.state.userTwitterId,
+        count : this.tweetSize,
+        access_token: this.$store.state.access_token,
+        access_secret: this.$store.state.access_secret
+      }
     },
+    deep: false,
+   
+    result ({ data, loading, networkStatus }) {
+      this.$store.commit("setCurrentUserTweets",data.getTimeline)
+      console.log('Current User Tweets')
+      console.log(this.$store.getters.getCurrentUserTweets)
+    },
+    error (error) {
+    },
+    loadingKey: 'loadingQueriesCount',
+    watchLoading (isLoading, countModifier) {
+    }
+    },
+  taggedTweets: {
+    query: require('../graphql/getTaggedTweets.gql'),
+    variables () {
+      return {
+        queryText: 'to:@'+this.$store.state.loggedInUserData.screen_name+' from:'+this.$store.getters.getScreenName,
+        limit: this.tweetSize
+      }
+    },
+    deep: false,
+   
+    result ({ data, loading, networkStatus }) {
+      this.$store.commit("setTaggedTweets",data.search)
+      console.log(this.$store.state.taggedTweets[this.$store.state.taggedTweets.length-1].id_str)
+    },
+    error (error) {
+
+    },
+    loadingKey: 'loadingQueriesCount',
+    watchLoading (isLoading, countModifier) {
+      this.taggedTweetLoading = isLoading
+    },
+  },
+  },
     methods: {
       validate(){
-          if(this.tweetText==""){
+          if(this.tweetText=="" && this.selectedTweet!=""){
           this.modalerror = true
+        }
+        else if(this.selectedTweet==""){
+          alert("Please select a tweet to reply")
         }
           else{
             this.modal0 = true
@@ -443,24 +476,7 @@ import { SyncLoader } from "vue-spinner/dist/vue-spinner.min.js";
         container.scrollTop = container.scrollHeight;
       },
       sendTweet(){
-        this.progressState = true;
-        axios.post('https://twittercsdnew.herokuapp.com/sendTweet', {
-                    id: this.selectedTweet,
-                    statusText: '@'+this.$store.getters.getScreenName+' '+this.tweetText,
-                    access_token: this.$store.state.access_token,
-                    access_token_secret: this.$store.state.access_secret,
-                })
-                .then(response =>{
-                  console.log("Success")
-                  this.progressState = false;
-                  this.modal0 = false;
-                  this.tweetText = '';
-                  setTimeout(() => this.tweetSize++, 2000);
-                })
-                .catch(error => {
-                  console.log("error")
-                });
-        
+
       },
       getLocalTime(datetime){
             var myDate = new Date(datetime)
